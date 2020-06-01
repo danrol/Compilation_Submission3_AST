@@ -303,13 +303,13 @@ void RepeatStmt::genStmt(){
   emitlabel(condlabel);
   _condition->genBoolExp (FALL_THROUGH, exitlabel);
 
-
   _body->genStmt ();
 
+  _counter->genStmt();
 
   emit ("goto label%d\n", condlabel);
   emitlabel(exitlabel);
-  
+
 }
 
 void Block::genStmt()

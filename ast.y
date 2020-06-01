@@ -104,6 +104,7 @@ stmt       :  assign_stmt { $$ = $1; } |
               /* write_stmt | */
 			  while_stmt  { $$ = $1; } |
 	          if_stmt     { $$ = $1; } |
+            repeat_stmt { $$ = $1; } |
 			  for_stmt    { $$ = 0;  } | /* not implemented yet */
 			  switch_stmt { $$ = $1; } |
 			  break_stmt  { $$ = $1; } |
