@@ -10,7 +10,7 @@ void yyerror (std::string s);
 
 /* void emit (const char *format, ...);  */
 
-// number of errors 
+// number of errors
 int errors;
 }
 
@@ -26,9 +26,9 @@ int errors;
    double fval;
    enum op op;
    char name[100];
-   
+
    myType _type;
-   
+
    //  pointers to AST nodes:
    Stmt *stmt;
    Block *block;
@@ -57,12 +57,12 @@ int errors;
 %type <_type> type
 
 %type <exp> expression
-%type <boolexp> boolexp 
+%type <boolexp> boolexp
 %type <stmt> stmt
 %type <block> block
 %type <stmtlist> stmtlist
-%type <read_stmt> read_stmt 
-%type <assign_stmt> assign_stmt 
+%type <read_stmt> read_stmt
+%type <assign_stmt> assign_stmt
 %type <while_stmt> while_stmt
 %type <if_stmt>  if_stmt
 %type <switch_stmt> switch_stmt;
@@ -72,7 +72,7 @@ int errors;
 %type <break_stmt> break_stmt
 %type <continue_stmt> continue_stmt
 
-%left OR 
+%left OR
 %left AND NAND
 %left XOR
 %left ADDOP
@@ -82,19 +82,19 @@ int errors;
 %error-verbose
 
 %%
-program    : declarations stmt { 
+program    : declarations stmt {
                      /* if (errors == 0) { for debugging: generate code even if errors found */
-					     $2->genStmt (); emit ("halt\n"); 
+					     $2->genStmt (); emit ("halt\n");
 						 /*} */
 				     }
 
-declarations: declarations type ID ';' { if (!(putSymbol ($3, $2))) 
+declarations: declarations type ID ';' { if (!(putSymbol ($3, $2)))
                                              errorMsg ("line %d: redeclaration of %s\n",
 											            @3.first_line, $3); }
             | /* empty */ ;
 
 type: INT { $$ = _INT; } |
-      FLOAT { $$ = _FLOAT; };			  
+      FLOAT { $$ = _FLOAT; };
 
 stmt       :  assign_stmt { $$ = $1; } |
               read_stmt { $$ = $1; } |
@@ -106,29 +106,30 @@ stmt       :  assign_stmt { $$ = $1; } |
 			  break_stmt  { $$ = $1; } |
               continue_stmt { $$ = $1;}|
 			  block       { $$ = $1; } ;
-			  
-read_stmt:    READ '(' ID ')' ';'{ 
+
+read_stmt:    READ '(' ID ')' ';'{
                 $$ = new ReadStmt (new IdNode ($3, @3.first_line), @1.first_line); };
 
 /* write_stmt:   WRITE '(' expression ')' ';' ; */
-                
+
 assign_stmt:  ID '='  expression ';' { $$ = new AssignStmt (new IdNode ($1, @1.first_line),
                                                             $3, @2.first_line); };
 
 while_stmt :  WHILE '(' boolexp ')' stmt { $$ = new WhileStmt ($3, $5); };
 
+repeat_stmt: REPEAT '(' expresson ')' stmt {  $$ = new RepeatStmt($3, $5); };
+
 if_stmt    :  IF '(' boolexp ')' stmt ELSE stmt { $$ = new IfStmt ($3, $5, $7); };
 
 for_stmt   :  FOR '(' assign_stmt boolexp ';' assign_stmt ')' stmt
-										   
-											   
+
 switch_stmt : SWITCH '(' expression ')' '{' caselist DEFAULT ':' stmt '}' { $$ = new SwitchStmt ($3, $6, $9, @1.first_line); };
 
-/*  semantic value of caselist is a pointer to the first case in a list of Cases. Each Case points to the 
-    next Case on the list */ 
-caselist : case caselist { $1->_next = $2;   
+/*  semantic value of caselist is a pointer to the first case in a list of Cases. Each Case points to the
+    next Case on the list */
+caselist : case caselist { $1->_next = $2;
                            $$ = $1; };
-        						   
+
 
 caselist : case  { $$ = $1;};
 
@@ -145,24 +146,24 @@ block: '{' declarations stmtlist '}' { $$ = new Block ($3); };
 /*  right recursion is used here because it simplifies the code  a bit.
     but left recursion  (i.e. stmtlist: stmtlist stmt)  would be better
     because it uses less stack space.
-    Semantic value of stmtlist is a pointer to the first Stmt in a list 
+    Semantic value of stmtlist is a pointer to the first Stmt in a list
 	of Stmts. Each Stmt points to the next Stmt on the list
 */
 stmtlist:  stmt stmtlist {  $1->_next = $2;  // also works when $2 is NULL
-                            $$ = $1;  
+                            $$ = $1;
 						 };
 stmtlist:  /* empty */ { $$ = NULL; };
-	  
+
 expression : expression ADDOP expression {
                   $$ = new BinaryOp ($2, $1, $3, @2.first_line); } |
 		     expression MULOP expression {
                   $$ = new BinaryOp ($2, $1, $3, @2.first_line); };
-             
+
 expression: '(' expression ')' { $$ = $2; } |
             ID          { $$ = new IdNode ($1, @1.first_line);} |
             INT_NUM     { $$ = new NumNode ($1); } |
 			FLOAT_NUM   { $$ = new NumNode ($1); };
-			
+
 boolexp: expression RELOP expression { $$ = new SimpleBoolExp ($2, $1, $3); };
 
 boolexp: boolexp OR boolexp { $$ = new Or ($1, $3); } |
@@ -185,15 +186,15 @@ main (int argc, char **argv)
        fprintf (stderr, "failed to open %s\n", argv[1]);
 	   return 2;
   }
-  
+
   errors = 0;
   yyparse ();
-   
+
   if (errors > 0) {
       fprintf(stderr, "compilation failed\n");
 	  return 3;
   }
-  
+
   fclose (yyin);
   return 0;
 }
@@ -210,14 +211,8 @@ void errorMsg (const char *format, ...)
     va_list argptr;
 	va_start (argptr, format);
 	// all the arguments following 'format' are passed on to vfprintf
-	vfprintf (stderr, format, argptr); 
+	vfprintf (stderr, format, argptr);
 	va_end (argptr);
-	
+
 	errors++;
-} 
-
-
-
-
-
-
+}
