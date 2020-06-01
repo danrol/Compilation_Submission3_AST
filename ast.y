@@ -38,6 +38,7 @@ int errors;
    IfStmt *if_stmt;
    WhileStmt *while_stmt;
    SwitchStmt *switch_stmt;
+   RepeatStmt *repeat_stmt;
    Case *caselist; //points to first Case in the list
    Case *mycase;
    BreakStmt *break_stmt;
@@ -65,12 +66,14 @@ int errors;
 %type <assign_stmt> assign_stmt
 %type <while_stmt> while_stmt
 %type <if_stmt>  if_stmt
+%type <repeat_stmt> repeat_stmt
 %type <switch_stmt> switch_stmt;
 %type <caselist> caselist
 %type <mycase> case
 %type <hasBreak> optional_break;
 %type <break_stmt> break_stmt
 %type <continue_stmt> continue_stmt
+
 
 %left OR
 %left AND NAND
