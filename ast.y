@@ -52,7 +52,7 @@ int errors;
 %token <op> ADDOP MULOP RELOP
 %token <name> ID
 
-%token READ IF ELSE WHILE  FOR INT FLOAT
+%token READ IF ELSE WHILE FOR INT FLOAT REPEAT
 %token OR AND NOT NAND SWITCH CASE DEFAULT BREAK CONTINUE
 %type <_type> type
 
