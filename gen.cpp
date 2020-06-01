@@ -108,6 +108,7 @@ Object BinaryOp::genExp ()
 
   	emit ("%s = %s %s %s\n", result._string, left_operand_result._string,
                                    the_op, right_operand_result._string);
+    printf("\n");
 	return result;
 }
 
@@ -265,19 +266,6 @@ void AssignStmt::genStmt()
 }
 
 
-void IfStmt::genStmt()
-{
-    int elseStmtlabel = newlabel ();
-	int exitlabel = newlabel ();
-
-	_condition->genBoolExp (FALL_THROUGH, elseStmtlabel);
-
-    _thenStmt->genStmt ();
-	emit ("goto label%d\n", exitlabel);
-	emitlabel(elseStmtlabel);
-    _elseStmt->genStmt();
-	emitlabel(exitlabel);
-}
 
 void WhileStmt::genStmt()
 {
@@ -294,11 +282,27 @@ void WhileStmt::genStmt()
 	emitlabel(exitlabel);
 }
 
+void IfStmt::genStmt()
+{
+    int elseStmtlabel = newlabel ();
+	int exitlabel = newlabel ();
+
+	_condition->genBoolExp (FALL_THROUGH, elseStmtlabel);
+
+    _thenStmt->genStmt ();
+	emit ("goto label%d\n", exitlabel);
+	emitlabel(elseStmtlabel);
+    _elseStmt->genStmt();
+	emitlabel(exitlabel);
+}
+
 void RepeatStmt::genStmt(){
   int condlabel = newlabel();
   int exitlabel = newlabel();
 
-  _condition->genBoolExp (FALL_THROUGH, exitlabel);
+  printf("\n");
+  _condition->genBoolExp (exitlabel, FALL_THROUGH);
+
   emitlabel(condlabel);
   _body->genStmt ();
 
