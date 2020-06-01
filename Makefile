@@ -28,8 +28,8 @@ ast.tab.c: ast.y
 ast.tab.h : ast.y
 	win_bison -d ast.y
 	
-lex.yy.c : ast.lex
-	win_flex ast.lex
+lex.yy.c : ast.l
+	win_flex ast.l
 	
 clean :
 	rm $(objects) myprog.exe
