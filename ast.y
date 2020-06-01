@@ -121,7 +121,7 @@ assign_stmt:  ID '='  expression ';' { $$ = new AssignStmt (new IdNode ($1, @1.f
 
 while_stmt :  WHILE '(' boolexp ')' stmt { $$ = new WhileStmt ($3, $5); };
 
-repeat_stmt: REPEAT '(' expression ')' stmt {  $$ = new RepeatStmt($3, $5); };
+repeat_stmt: REPEAT '(' expression ')' stmt {  $$ = new RepeatStmt(new SimpleBoolExp($3), $5); };
 
 if_stmt    :  IF '(' boolexp ')' stmt ELSE stmt { $$ = new IfStmt ($3, $5, $7); };
 
@@ -209,6 +209,7 @@ void yyerror (std::string s)
   errors++;
   fprintf (stderr, "line %d: %s\n", yylineno, s.c_str ());
 }
+
 
 void errorMsg (const char *format, ...)
 {

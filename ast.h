@@ -1,7 +1,7 @@
 #ifndef __AST_H
 #define __AST_H 1
 
-#include <string.h>
+#include <string>
 
 #include "gen.h"
 
@@ -87,6 +87,7 @@ public:
 //  boolean expressions
 // this is an abstract class
 
+
 class BoolExp : public  ASTnode {
 public:  //  some members  should be private ...
     /*  generate code for boolean expression. The code  should jump to
@@ -97,6 +98,14 @@ public:  //  some members  should be private ...
     virtual void genBoolExp (int truelabel, int falselabel) = 0; // every subclass should
                                             // override this (or be abstract too)
 };
+
+// class RepeatExp : public Exp {
+// public:
+//
+//   virtual void genBoolExp (int truelabel, int falselabel) = 0; // every subclass should
+// }
+
+
 
 // class NonBoolExp : public Exp{
 //   Object genNonBooleanExp(int truelabel, int falselabel) = 0;
@@ -112,12 +121,17 @@ public:
     SimpleBoolExp (enum op op, Exp *left, Exp *right)
   	     { this->_op = op; this->_left = left; this->_right = right;}
 
+    SimpleBoolExp (Exp *right)
+       	  { this->str_op = "<"; this->_left = 0; this->_right = right;}
+
     void genBoolExp (int truelabel, int falselabel); // override
 
     enum op _op;
+    std::string str_op;
 	Exp *_left; // left operand
 	Exp *_right; // right operand
 };
+
 
 class Or : public BoolExp {
 public:
@@ -203,20 +217,34 @@ public:
 	 Stmt *_body;
 };
 
+// class SimpleRepeatExp : public RepeatExp{
+// public:
+//   SimpleRepeatExp (Exp *right)
+//   { this->_op = RELOP; this->_left = 0; this->_right = right;}
+//
+//   enum op _op;
+// Exp *_left; // left operand
+// Exp *_right; // right operand
+//
+// }
+
 class RepeatStmt: public Stmt {
 public:
-     RepeatStmt (Exp *condition, Stmt *body)
+     RepeatStmt (SimpleBoolExp *condition, Stmt *body)
 	          : Stmt ()
-	          { _condition = condition; _body = body; }
+	          { _condition = condition; _body = body;
+             }
 
 	 void genStmt (); // override
 
    // void genNonBooleanExp(int truelabel, int falselabel);
 
-     Exp *_condition;
+     SimpleBoolExp *_condition;
      Stmt *_counter;
 	 Stmt *_body;
 };
+
+
 
 //  a block contains a list of statements. For now -- no declarations in a block
 class Block: public Stmt {
