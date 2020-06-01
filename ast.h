@@ -197,7 +197,7 @@ public:
 
 class RepeatStmt: public Stmt {
 public:
-     RepeatStmt (int *condition, Stmt *body)
+     RepeatStmt (AssignStmt *condition, Stmt *body)
 	          : Stmt ()
 	          { _condition = condition; _body = body; }
 
@@ -205,7 +205,6 @@ public:
 
      Exp *_condition;
      int *_counter;
-     _counter = 0;
 	 Stmt *_body;
 };
 
