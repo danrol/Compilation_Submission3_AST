@@ -114,7 +114,6 @@ Object BinaryOp::genExp ()
   	emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
                                    the_op, right_operand_result._string);
     printf("\n");
-    currentResult = result._string;
 
 	return result;
 }
@@ -153,13 +152,7 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
 
 	Object left_result = _left->genExp ();
 	Object right_result = _right->genExp ();
-
-  // if (isRepeat == true){
-  //   Exp* minusOne =  new NumNode(1);
-  //   BinaryOp* counterMinusOne = new BinaryOp(MINUS, _right, minusOne, 1);
-  //   counterMinusOne->genExp();
-  //   isRepeat = false;
-  // }
+  currentResult = right_result._string;
 
   if(isRepeat == true && isLabel1Set == false){ // TODO change to more elegant solution
     emitlabel(label1);
@@ -167,7 +160,6 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
     isLabel1Set = true;
     isRepeat = false;
     // BinaryOp (enum op op, Exp *left, Exp *right, int line);
-    // emit("%s= %s - 1", currentResult, currentResult);
   }
 
     switch (_op) {
@@ -303,7 +295,6 @@ void WhileStmt::genStmt()
 
 	_body->genStmt ();
 
-
 	emit ("goto label%d\n", condlabel);
 	emitlabel(exitlabel);
 }
@@ -334,7 +325,7 @@ void RepeatStmt::genStmt(){
   _condition->genBoolExp (exitlabel, FALL_THROUGH);
 
   _body->genStmt ();
-
+  emit("%s= %s - 1", currentResult, currentResult);
   emit ("goto label%d\n", condlabel);
   emitlabel(exitlabel);
 
