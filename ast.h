@@ -33,7 +33,10 @@ public:
 
     virtual Object genExp() = 0; // every subclass should override this (or be abstract too)
 
+    // virtual Object genNonBooleanExp(int truelabel, int falselabel);
+
     Exp() { /*_result = -1;*/ _type = UNKNOWN; }
+
     // Exp (int result, myType _type) : ASTnode () { this->_result = result; this->_type = _type; }
 #if 0
     //  _result field no longer used.  Instead, return value of genExp() is used
@@ -94,6 +97,11 @@ public:  //  some members  should be private ...
     virtual void genBoolExp (int truelabel, int falselabel) = 0; // every subclass should
                                             // override this (or be abstract too)
 };
+
+// class NonBoolExp : public Exp{
+//   Object genNonBooleanExp(int truelabel, int falselabel) = 0;
+//
+// }
 
 // nodes for  simple boolean expressions having the form
 // expression RELOP expression
@@ -197,13 +205,15 @@ public:
 
 class RepeatStmt: public Stmt {
 public:
-     RepeatStmt (Stmt *condition, Stmt *body)
+     RepeatStmt (Exp *condition, Stmt *body)
 	          : Stmt ()
 	          { _condition = condition; _body = body; }
 
 	 void genStmt (); // override
 
-     Stmt *_condition;
+   // void genNonBooleanExp(int truelabel, int falselabel);
+
+     Exp *_condition;
      Stmt *_counter;
 	 Stmt *_body;
 };

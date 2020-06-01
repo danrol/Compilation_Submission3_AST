@@ -287,8 +287,6 @@ void WhileStmt::genStmt()
 	emitlabel(condlabel);
 	_condition->genBoolExp (FALL_THROUGH, exitlabel);
 
-
-
 	_body->genStmt ();
 
 
@@ -300,9 +298,8 @@ void RepeatStmt::genStmt(){
   int condlabel = newlabel();
   int exitlabel = newlabel();
 
+  _condition->genExp ();//TODO fix
   emitlabel(condlabel);
-  _condition->genBoolExp (FALL_THROUGH, exitlabel);
-
   _body->genStmt ();
 
   _counter->genStmt();
