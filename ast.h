@@ -216,27 +216,14 @@ public:
 	 Stmt *_body;
 };
 
-// class SimpleRepeatExp : public RepeatExp{
-// public:
-//   SimpleRepeatExp (Exp *right)
-//   { this->_op = RELOP; this->_left = 0; this->_right = right;}
-//
-//   enum op _op;
-// Exp *_left; // left operand
-// Exp *_right; // right operand
-//
-// }
 
 class RepeatStmt: public Stmt {
 public:
      RepeatStmt (SimpleBoolExp *condition, Stmt *body)
 	          : Stmt ()
-	          { _condition = condition; _body = body;
-             }
+	          { _condition = condition; _body = body;  }
 
 	 void genStmt (); // override
-
-   // void genNonBooleanExp(int truelabel, int falselabel);
 
      SimpleBoolExp *_condition;
      Stmt *_counter;

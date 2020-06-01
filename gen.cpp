@@ -17,6 +17,10 @@
 static
 std::stack<int> continuelabels;
 
+int label1;
+bool isRepeat = false;
+bool isLabel1Set = false;
+
 static
 Object newTemp()
 {
@@ -106,9 +110,10 @@ Object BinaryOp::genExp ()
 
 	const char *the_op = opName (_op, _type);
 
-  	emit ("%s = %s %s %s\n", result._string, left_operand_result._string,
+  	emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
                                    the_op, right_operand_result._string);
     printf("\n");
+
 	return result;
 }
 
@@ -118,9 +123,9 @@ Object NumNode::genExp ()
 #if 0
     int result = newTemp ();
 	if (_type == _INT)
-  	    emit ("_t%d = %d\n", result, _u.ival);
+  	    emit ("_t%d = %d int NumNode::genExp\n", result, _u.ival);
 	else
-	    emit ("_t%d = %.2f\n", result, _u.fval);
+	    emit ("_t%d = %.2f flot NumNode::genExp\n", result, _u.fval);
 	return result;
 #endif
 }
@@ -143,8 +148,15 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
 
     const char *the_op;
 
+
 	Object left_result = _left->genExp ();
 	Object right_result = _right->genExp ();
+
+  if(isRepeat == true && isLabel1Set == false){
+    emitlabel(label1);
+    isRepeat = false;
+    isLabel1Set = true;
+  }
 
     switch (_op) {
 	    case LT:
@@ -301,9 +313,12 @@ void RepeatStmt::genStmt(){
   int exitlabel = newlabel();
 
   printf("\n");
+  // emitlabel(condlabel);
+  label1 = condlabel;
+  isRepeat = true;
+
   _condition->genBoolExp (exitlabel, FALL_THROUGH);
 
-  emitlabel(condlabel);
   _body->genStmt ();
 
   emit ("goto label%d\n", condlabel);
