@@ -122,12 +122,11 @@ public:
   	     { this->_op = op; this->_left = left; this->_right = right;}
 
     SimpleBoolExp (Exp *right)
-       	  { this->str_op = "<"; this->_left = 0; this->_right = right;}
+       	  { this->_op = LE; this->_left = new NumNode(0); this->_right = right;}
 
     void genBoolExp (int truelabel, int falselabel); // override
 
     enum op _op;
-    std::string str_op;
 	Exp *_left; // left operand
 	Exp *_right; // right operand
 };

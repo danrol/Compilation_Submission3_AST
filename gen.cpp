@@ -302,8 +302,6 @@ void RepeatStmt::genStmt(){
   emitlabel(condlabel);
   _body->genStmt ();
 
-  _counter->genStmt();
-
   emit ("goto label%d\n", condlabel);
   emitlabel(exitlabel);
 

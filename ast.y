@@ -15,7 +15,7 @@ int errors;
 }
 
 %code requires {
-// #include "gen.h"
+#include "gen.h"
 #include "ast.h"
 }
 
