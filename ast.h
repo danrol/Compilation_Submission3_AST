@@ -197,14 +197,14 @@ public:
 
 class RepeatStmt: public Stmt {
 public:
-     RepeatStmt (AssignStmt *condition, Stmt *body)
+     RepeatStmt (Stmt *condition, Stmt *body)
 	          : Stmt ()
 	          { _condition = condition; _body = body; }
 
 	 void genStmt (); // override
 
-     Exp *_condition;
-     int *_counter;
+     Stmt *_condition;
+     Stmt *_counter;
 	 Stmt *_body;
 };
 
