@@ -18,7 +18,7 @@ static
 std::stack<int> continuelabels;
 
 int label1;
-std::string currentResult = "";
+char currentResult[100];
 bool isRepeat = false;
 bool isLabel1Set = false;
 
@@ -152,11 +152,13 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
 
 	Object left_result = _left->genExp ();
 	Object right_result = _right->genExp ();
-  currentResult = right_result._string;
+
+  strcpy(currentResult, left_result._string);
+
 
   if(isRepeat == true && isLabel1Set == false){ // TODO change to more elegant solution
     emitlabel(label1);
-    printf("\n");
+    // printf("\n");
     isLabel1Set = true;
     isRepeat = false;
     // BinaryOp (enum op op, Exp *left, Exp *right, int line);
@@ -196,8 +198,6 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
                   right_result._string, truelabel);
 	    emit ("goto label%d\n", falselabel);
 	}
-
-
 }
 
 void Or::genBoolExp (int truelabel, int falselabel)
@@ -317,7 +317,6 @@ void RepeatStmt::genStmt(){
   int condlabel = newlabel();
   int exitlabel = newlabel();
 
-  printf("\n");
   // emitlabel(condlabel);
   label1 = condlabel;
   isRepeat = true;
@@ -325,7 +324,7 @@ void RepeatStmt::genStmt(){
   _condition->genBoolExp (exitlabel, FALL_THROUGH);
 
   _body->genStmt ();
-  emit("%s= %s - 1", currentResult, currentResult);
+  emit("%s = %s - 1\n", currentResult, currentResult);
   emit ("goto label%d\n", condlabel);
   emitlabel(exitlabel);
 

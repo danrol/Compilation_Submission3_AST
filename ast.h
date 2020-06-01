@@ -121,8 +121,8 @@ public:
     SimpleBoolExp (enum op op, Exp *left, Exp *right)
   	     { this->_op = op; this->_left = left; this->_right = right;}
 
-    SimpleBoolExp (Exp *right)
-       	  { this->_op = LE; this->_left = new NumNode(0); this->_right = right;}
+    SimpleBoolExp (Exp *left)
+       	  { this->_op = LE; this->_left = left ; this->_right = new NumNode(0);}
 
     void genBoolExp (int truelabel, int falselabel); // override
 

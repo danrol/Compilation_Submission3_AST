@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void emit (const char *format, ...); 
+void emit (const char *format, ...);
 void emitlabel (int label);
 extern int errors;
 
@@ -31,13 +31,13 @@ public:
     Object(int ival) {sprintf(this->_string, "%d", ival);
                       this->_type = INT_NUMBER; }
 
-    Object(double fval) {sprintf(this->_string, "%.2f", fval); 
+    Object(double fval) {sprintf(this->_string, "%.2f", fval);
                          this->_type = FLOAT_NUMBER; }
-                         
-    Object() { strcpy(this->_string, "error found"); this->_type = ERROR; } 
-                            
+
+    Object() { strcpy(this->_string, "error found"); this->_type = ERROR; }
+
     enum objectType _type;
     char _string[100]; // for example "bar"  or "17" or "3.14"
-}; 
+};
 
 #endif // not defined __GEN_H
