@@ -121,7 +121,7 @@ assign_stmt:  ID '='  expression ';' { $$ = new AssignStmt (new IdNode ($1, @1.f
 
 while_stmt :  WHILE '(' boolexp ')' stmt { $$ = new WhileStmt ($3, $5); };
 
-repeat_stmt: REPEAT '(' expresson ')' stmt {  $$ = new RepeatStmt($3, $5); };
+repeat_stmt: REPEAT '(' expression ')' stmt {  $$ = new RepeatStmt($3, $5); };
 
 if_stmt    :  IF '(' boolexp ')' stmt ELSE stmt { $$ = new IfStmt ($3, $5, $7); };
 
