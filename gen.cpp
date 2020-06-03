@@ -292,6 +292,7 @@ void And::genBoolExp (int truelabel, int falselabel)
 
 
 
+
 void Not::genBoolExp (int truelabel, int falselabel)
 {
     _operand->genBoolExp (falselabel, truelabel);
