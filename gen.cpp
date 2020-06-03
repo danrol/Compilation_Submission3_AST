@@ -158,7 +158,6 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
 
   if(isRepeat == true && isLabel1Set == false){ // TODO change to more elegant solution
     emitlabel(label1);
-    // printf("\n");
     isLabel1Set = true;
     isRepeat = false;
     // BinaryOp (enum op op, Exp *left, Exp *right, int line);
