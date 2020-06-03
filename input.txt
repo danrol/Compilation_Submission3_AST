@@ -1,13 +1,11 @@
-   int counter;
-   {
-   counter = 10;
-    while (counter >=0){
-	continue;
-	 if (counter==7){
-	      counter = counter - 3;
-	 }
-	 else{
-	      counter = counter - 1;
-		  }
-    }
-	}
+float i;
+int f;
+
+float result;
+
+{
+i = 10;
+f = 123.15;
+
+result = i + f;
+}

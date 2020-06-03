@@ -108,21 +108,47 @@ opName (enum op op, myType t)
 
 Object BinaryOp::genExp ()
 {
+	Object left_operand_result = _left->genExp ();
+	Object right_operand_result = _right->genExp ();
+
+
+  char rightStr[100] = "_t";
+  char rightTempIdStr[100];
+  // strcpy(rightResult, right_operand_result._string);
+
   // printf("inside BinaryOp::genExp\n");
     if (_left->_type != _right->_type){
       // printf("returns objects in BinaryOp::genExp\n");
-        return Object(); //  this means an error was found
-      }
 
-	Object left_operand_result = _left->genExp ();
-	Object right_operand_result = _right->genExp ();
+      Object temp = newTemp();
+      int rightTempId = currentTemp;
+      sprintf(rightTempIdStr, "%d", rightTempId);
+      strncat(rightStr, rightTempIdStr , 2);
+
+      switch (_left->_type ) {
+        case _INT:
+          emit(" %s = (int) %s\n", rightStr, right_operand_result._string);
+        break;
+      case _FLOAT:
+      emit(" %s = (float) %s\n", rightStr, right_operand_result._string);
+        break;
+      case UNKNOWN:
+          // the_op = "<=";
+        break;
+      default:
+          fprintf (stderr, "internal compiler error #3\n"); exit (1);
+      }
+    }
+    else{
+      strcpy(rightStr, right_operand_result._string);
+    }
 
 	Object result = newTemp ();
 
 	const char *the_op = opName (_op, _type);
 
   	emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
-                                   the_op, right_operand_result._string);
+                                   the_op, rightStr);
     printf("\n");
 	return result;
 }
