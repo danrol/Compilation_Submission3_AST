@@ -359,26 +359,39 @@ void SwitchStmt::genStmt()
   	{
   		emit("goto label%d\n", check_cases);
   		Case* currect_case = _caselist;
+      Case* temp_current_case = _caselist;
+
+      while (temp_current_case != NULL){
+        temp_current_case->_label = newlabel();
+        // currect_case->_stmt->genStmt();
+        emit("if _t%d == %d goto label%d\n",result, temp_current_case->_number,temp_current_case->_label);
+        // currect_case = currect_case->_next;
+        if (currect_case->_hasBreak)
+          case_break->genStmt();
+        temp_current_case = temp_current_case->_next;
+      }
 
   		while (currect_case != NULL)
   		{
   			currect_case->_label = newlabel();
   			emitlabel(currect_case->_label);
   			currect_case->_stmt->genStmt();
+
   			if (currect_case->_hasBreak)
   				case_break->genStmt();
   			currect_case = currect_case->_next;
   		}
+
   		emitlabel(default_stmt_label);
   		_default_stmt->genStmt();
   		case_break->genStmt();
 
   		currect_case = _caselist;
-  		while (currect_case != NULL)
-  		{
-  			emit("if _t%d == %d goto label%d\n",result, currect_case->_number,currect_case->_label);
-  			currect_case = currect_case->_next;
-  		}
+  		// while (currect_case != NULL)
+  		// {
+  		// 	// emit("if _t%d == %d goto label%d\n",result, currect_case->_number,currect_case->_label);
+  		// 	// currect_case = currect_case->_next;
+  		// }
   		emit("goto label%d\n", default_stmt_label);
   	}
     else{
