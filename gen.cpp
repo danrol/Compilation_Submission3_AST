@@ -26,6 +26,8 @@ int currentTemp;
 bool isRepeat = false;
 bool isLabel1Set = false;
 
+//TODO refactor. Go over emits and prints
+
 static
 Object newTemp()
 {
@@ -312,7 +314,7 @@ void WhileStmt::genStmt()
 
 void ContinueStmt::genStmt(){
   // continuelabels.push(currentContLabel);
-  emit("goto label%d\n", currentContLabel);
+  emit("goto label%d !!!!continue!!!\n", currentContLabel);
 }
 
 void IfStmt::genStmt()
