@@ -114,26 +114,22 @@ Object BinaryOp::genExp ()
 
   char rightStr[100] = "_t";
   char rightTempIdStr[100];
-  // strcpy(rightResult, right_operand_result._string);
 
-  // printf("inside BinaryOp::genExp\n");
     if (_left->_type != _right->_type){
       // printf("returns objects in BinaryOp::genExp\n");
 
       Object temp = newTemp();
       int rightTempId = currentTemp;
       sprintf(rightTempIdStr, "%d", rightTempId);
-      strncat(rightStr, rightTempIdStr , 2);
+      strncat(rightStr, rightTempIdStr , 1);
 
       switch (_left->_type ) {
         case _INT:
           emit(" %s = (int) %s\n", rightStr, right_operand_result._string);
+
         break;
       case _FLOAT:
       emit(" %s = (float) %s\n", rightStr, right_operand_result._string);
-        break;
-      case UNKNOWN:
-          // the_op = "<=";
         break;
       default:
           fprintf (stderr, "internal compiler error #3\n"); exit (1);
@@ -315,8 +311,29 @@ void AssignStmt::genStmt()
 
 	myType idtype = _lhs->_type;
 
-	if (idtype == _rhs->_type)
+	if (idtype == _rhs->_type){
 	  emit ("%s = %s\n", _lhs->_name, result._string);
+  }
+  else{
+    if (_lhs->_type != _rhs->_type && _lhs->_type != UNKNOWN)
+    {
+      //       errorMsg ("line %d: left hand side and right hand side\
+      // of assignment have different types\n", _line);
+      switch (_lhs->_type ) {
+        case _INT:
+          _rhs->_type = _INT;
+          emit(" %s = (int) %s  ", _lhs->_name, result._string);
+          printf("!!!!Warning casting from float to int. Valuable data may be lost\n");
+        break;
+      case _FLOAT:
+      _rhs->_type = _FLOAT;
+      emit(" %s = (float) %s\n", _lhs->_name, result._string);
+        break;
+      default:
+          fprintf (stderr, "internal compiler error #3\n"); exit (1);
+      }
+  }
+}
 }
 
 
