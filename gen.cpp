@@ -104,9 +104,9 @@ opName (enum op op, myType t)
 
 Object BinaryOp::genExp ()
 {
-  printf("inside BinaryOp::genExp");
+  // printf("inside BinaryOp::genExp\n");
     if (_left->_type != _right->_type){
-      printf("returns objects in BinaryOp::genExp");
+      // printf("returns objects in BinaryOp::genExp\n");
         return Object(); //  this means an error was found
       }
 
@@ -125,7 +125,7 @@ Object BinaryOp::genExp ()
 
 Object NumNode::genExp ()
 {
-  printf("inside NumNode::genExp");
+  // printf("inside NumNode::genExp\n");
     return (_type == _INT) ? Object(_u.ival) : Object(_u.fval);
 #if 0
     int result = newTemp ();
@@ -139,7 +139,7 @@ Object NumNode::genExp ()
 
 Object IdNode::genExp()
 {
-  printf("Inside IdNode::genExp()");
+  // printf("Inside IdNode::genExp()\n");
     return Object(_name);
 #if 0
     int result = newTemp ();
@@ -346,10 +346,8 @@ void SwitchStmt::genStmt()
   int check_cases = newlabel();
   	int exitlabel = newlabel();
   	int default_stmt_label = newlabel();
-    printf("before result\n");
     Object temp = _exp->genExp();
     int result = currentTemp;
-    printf("after result\n");
 
     // emit("")
 
@@ -357,19 +355,18 @@ void SwitchStmt::genStmt()
   	BreakStmt *case_break = new BreakStmt(_line);
   	if (_exp->_type == _INT)
   	{
-  		emit("goto label%d\n", check_cases);
+  		// emit("goto label%d\n", check_cases);
   		Case* currect_case = _caselist;
       Case* temp_current_case = _caselist;
 
       while (temp_current_case != NULL){
         temp_current_case->_label = newlabel();
-        // currect_case->_stmt->genStmt();
         emit("if _t%d == %d goto label%d\n",result, temp_current_case->_number,temp_current_case->_label);
-        // currect_case = currect_case->_next;
         if (currect_case->_hasBreak)
           case_break->genStmt();
         temp_current_case = temp_current_case->_next;
       }
+      emit("goto label%d\n", default_stmt_label);
 
   		while (currect_case != NULL)
   		{
@@ -392,7 +389,6 @@ void SwitchStmt::genStmt()
   		// 	// emit("if _t%d == %d goto label%d\n",result, currect_case->_number,currect_case->_label);
   		// 	// currect_case = currect_case->_next;
   		// }
-  		emit("goto label%d\n", default_stmt_label);
   	}
     else{
 
