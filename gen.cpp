@@ -410,9 +410,6 @@ void BreakStmt::genStmt()
   	if(isEmpty){
       errorMsg ("line %d. Break not in loop or switch case\n", _line);
     }
-    else{
-  		emit ("goto label%d\n", exitlabels.top ());
-    }
   }
 
 void ContinueStmt::genStmt(){
