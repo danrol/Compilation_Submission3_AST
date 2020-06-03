@@ -14,8 +14,8 @@
       continue label of the enclosing while statement and so on.
       The stack is empty when we are not inside a  while statement.
 */
-static
-std::stack<int> continuelabels;
+static std::stack<int> continuelabels;
+static std::stack<int> tempLabels;
 static std::stack<int> exitlabels;
 
 int label1;
@@ -343,15 +343,12 @@ void Block::genStmt()
 
 void SwitchStmt::genStmt()
 {
-  int check_cases = newlabel();
-  	int exitlabel = newlabel();
-  	int default_stmt_label = newlabel();
+    // int check_cases = newlabel();
+    int default_stmt_label = 0, exitlabel = 0;
     Object temp = _exp->genExp();
     int result = currentTemp;
 
-    // emit("")
-
-  	exitlabels.push(exitlabel);
+  	// exitlabels.push(exitlabel);
   	BreakStmt *case_break = new BreakStmt(_line);
   	if (_exp->_type == _INT)
   	{
@@ -359,24 +356,39 @@ void SwitchStmt::genStmt()
   		Case* currect_case = _caselist;
       Case* temp_current_case = _caselist;
 
+
       while (temp_current_case != NULL){
         temp_current_case->_label = newlabel();
+        tempLabels.push(temp_current_case->_label);
         emit("if _t%d == %d goto label%d\n",result, temp_current_case->_number,temp_current_case->_label);
-        if (currect_case->_hasBreak)
-          case_break->genStmt();
+        // if (currect_case->_hasBreak)
+          // case_break->genStmt();
         temp_current_case = temp_current_case->_next;
       }
+      default_stmt_label = newlabel();
+      exitlabel = newlabel();
+      tempLabels.push(default_stmt_label);
+      tempLabels.push(exitlabel);
       emit("goto label%d\n", default_stmt_label);
+
+      while(!tempLabels.empty()){
+        exitlabels.push(tempLabels.top());
+        tempLabels.pop();
+      }
 
   		while (currect_case != NULL)
   		{
-  			currect_case->_label = newlabel();
-  			emitlabel(currect_case->_label);
+  			// currect_case->_label = newlabel();
+  			// emitlabel(currect_case->_label);
+        emitlabel(exitlabels.top());
+        exitlabels.pop();
   			currect_case->_stmt->genStmt();
 
-  			if (currect_case->_hasBreak)
+  			if (currect_case->_hasBreak){
   				case_break->genStmt();
+        }
   			currect_case = currect_case->_next;
+        emit("goto label%d\n", exitlabel);
   		}
 
   		emitlabel(default_stmt_label);
@@ -384,14 +396,9 @@ void SwitchStmt::genStmt()
   		case_break->genStmt();
 
   		currect_case = _caselist;
-  		// while (currect_case != NULL)
-  		// {
-  		// 	// emit("if _t%d == %d goto label%d\n",result, currect_case->_number,currect_case->_label);
-  		// 	// currect_case = currect_case->_next;
-  		// }
   	}
     else{
-
+      errorMsg ("on line %d expression inside switch is not of type int\n", _line);
     }
   	exitlabels.pop();
   	emitlabel(exitlabel);

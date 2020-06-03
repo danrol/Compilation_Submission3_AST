@@ -6,7 +6,7 @@ int b;
 {
   a = 0;
 
-  switch ( a + 17 ) {
+  switch ( a + 17.0 ) {
   
      case 1: b = 11; /*break; */
      case 2: b = 12; /*break; */
