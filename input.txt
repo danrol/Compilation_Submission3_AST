@@ -1,20 +1,18 @@
-/* example: switch stmt */
-
+/* example:  while stmt nested in while stmt */
 int a;
-int b;
+int z;
 
-{
-  a = 0;
+float h;
+float x;
 
-  switch ( a + 17 ) {
-  
-     case 1: b = 11; break; 
-     case 2: b = 12; break; 
-     case 3: b = 13;  break; 
-     default: b = 100; 
-  }  
-  
-  
-}
-
-   
+while  (a < 10) 
+   if (z < 2 * 3)
+       continue;
+   else
+       while (h == 7) {
+	      x = x + 0.6;
+	      if (x > 20.0)
+	         continue;
+	      else
+		     x = x + 7.5;
+	   }

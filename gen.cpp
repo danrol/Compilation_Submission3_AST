@@ -18,7 +18,9 @@ static std::stack<int> continuelabels;
 static std::stack<int> tempLabels;
 static std::stack<int> exitlabels;
 
+const int NO_CONTINUE = -1;
 int label1;
+int currentContLabel = NO_CONTINUE;
 char currentResult[100];
 int currentTemp;
 bool isRepeat = false;
@@ -297,12 +299,20 @@ void WhileStmt::genStmt()
 	int exitlabel = newlabel ();
 
 	emitlabel(condlabel);
+  currentContLabel = condlabel;
 	_condition->genBoolExp (FALL_THROUGH, exitlabel);
 
 	_body->genStmt ();
 
+
+
 	emit ("goto label%d\n", condlabel);
 	emitlabel(exitlabel);
+}
+
+void ContinueStmt::genStmt(){
+  // continuelabels.push(currentContLabel);
+  emit("goto label%d\n", currentContLabel);
 }
 
 void IfStmt::genStmt()
@@ -411,7 +421,3 @@ void BreakStmt::genStmt()
       errorMsg ("line %d. Break not in loop or switch case\n", _line);
     }
   }
-
-void ContinueStmt::genStmt(){
-    emit("continue statements not implemented yet\n");
-}
