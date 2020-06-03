@@ -16,9 +16,11 @@
 */
 static
 std::stack<int> continuelabels;
+static std::stack<int> exitlabels;
 
 int label1;
 char currentResult[100];
+int currentTemp;
 bool isRepeat = false;
 bool isLabel1Set = false;
 
@@ -27,13 +29,14 @@ Object newTemp()
 {
    static int counter = 1;
    char name[100];
+   currentTemp = counter;
    sprintf(name, "_t%d", counter++);
    return Object(name);
 }
 
 #if 0
 static
-int newTemp ()
+int newTemp (bool useThis)
 {
    static int counter = 1;
    return counter++;
@@ -101,8 +104,11 @@ opName (enum op op, myType t)
 
 Object BinaryOp::genExp ()
 {
-    if (_left->_type != _right->_type)
+  printf("inside BinaryOp::genExp");
+    if (_left->_type != _right->_type){
+      printf("returns objects in BinaryOp::genExp");
         return Object(); //  this means an error was found
+      }
 
 	Object left_operand_result = _left->genExp ();
 	Object right_operand_result = _right->genExp ();
@@ -114,12 +120,12 @@ Object BinaryOp::genExp ()
   	emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
                                    the_op, right_operand_result._string);
     printf("\n");
-
 	return result;
 }
 
 Object NumNode::genExp ()
 {
+  printf("inside NumNode::genExp");
     return (_type == _INT) ? Object(_u.ival) : Object(_u.fval);
 #if 0
     int result = newTemp ();
@@ -133,6 +139,7 @@ Object NumNode::genExp ()
 
 Object IdNode::genExp()
 {
+  printf("Inside IdNode::genExp()");
     return Object(_name);
 #if 0
     int result = newTemp ();
@@ -326,7 +333,6 @@ void RepeatStmt::genStmt(){
   emit("%s = %s - 1\n", currentResult, currentResult);
   emit ("goto label%d\n", condlabel);
   emitlabel(exitlabel);
-
 }
 
 void Block::genStmt()
@@ -337,15 +343,62 @@ void Block::genStmt()
 
 void SwitchStmt::genStmt()
 {
-    emit("switch statements not implemented yet\n");
-}
+  int check_cases = newlabel();
+  	int exitlabel = newlabel();
+  	int default_stmt_label = newlabel();
+    printf("before result\n");
+    Object temp = _exp->genExp();
+    int result = currentTemp;
+    printf("after result\n");
+
+    // emit("")
+
+  	exitlabels.push(exitlabel);
+  	BreakStmt *case_break = new BreakStmt(_line);
+  	if (_exp->_type == _INT)
+  	{
+  		emit("goto label%d\n", check_cases);
+  		Case* currect_case = _caselist;
+
+  		while (currect_case != NULL)
+  		{
+  			currect_case->_label = newlabel();
+  			emitlabel(currect_case->_label);
+  			currect_case->_stmt->genStmt();
+  			if (currect_case->_hasBreak)
+  				case_break->genStmt();
+  			currect_case = currect_case->_next;
+  		}
+  		emitlabel(default_stmt_label);
+  		_default_stmt->genStmt();
+  		case_break->genStmt();
+
+  		currect_case = _caselist;
+  		while (currect_case != NULL)
+  		{
+  			emit("if _t%d == %d goto label%d\n",result, currect_case->_number,currect_case->_label);
+  			currect_case = currect_case->_next;
+  		}
+  		emit("goto label%d\n", default_stmt_label);
+  	}
+    else{
+
+    }
+  	exitlabels.pop();
+  	emitlabel(exitlabel);
+  }
 
 void BreakStmt::genStmt()
 {
-    emit("break statements not implemented yet\n");
-}
+  int isEmpty = exitlabels.empty();
+  	if(isEmpty){
+      errorMsg ("line %d. Break not in loop or switch case\n", _line);
+    }
+    else{
+  		emit ("goto label%d\n", exitlabels.top ());
+    }
+  }
 
-void ContinueStmt::genStmt()
-{
+void ContinueStmt::genStmt(){
     emit("continue statements not implemented yet\n");
 }

@@ -1,16 +1,20 @@
-/* example: simple repeat stmt */
+/* example: switch stmt */
 
 int a;
 int b;
-int c;
 
 {
-  a = 7;
-  b = 10;
-  c = 0;
+  a = 0;
 
-  repeat ((a+b)*2) 
-     c = c + 4;
+  switch ( a + 17 ) {
+  
+     case 1: b = 11; /*break; */
+     case 2: b = 12; /*break; */
+     case 3: b = 13; /* break; */
+     default: b = 100; 
+  }  
+  
+  
 }
 
    

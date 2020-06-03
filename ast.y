@@ -134,7 +134,6 @@ switch_stmt : SWITCH '(' expression ')' '{' caselist DEFAULT ':' stmt '}' { $$ =
 caselist : case caselist { $1->_next = $2;
                            $$ = $1; };
 
-
 caselist : case  { $$ = $1;};
 
 case : CASE INT_NUM ':' stmt optional_break { $$ = new Case ($2, $4, $5); };

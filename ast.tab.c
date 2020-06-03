@@ -593,9 +593,9 @@ static const yytype_uint8 yyrline[] =
 {
        0,    88,    88,    94,    97,    99,   100,   102,   103,   105,
      106,   107,   108,   109,   110,   111,   112,   114,   119,   122,
-     124,   126,   128,   130,   134,   138,   140,   142,   142,   144,
-     146,   148,   156,   159,   161,   163,   166,   167,   168,   169,
-     171,   173,   174,   175,   176,   177
+     124,   126,   128,   130,   134,   137,   139,   141,   141,   143,
+     145,   147,   155,   158,   160,   162,   165,   166,   167,   168,
+     170,   172,   173,   174,   175,   176
 };
 #endif
 
@@ -1687,49 +1687,49 @@ yyreduce:
     break;
 
   case 25:
-#line 138 "ast.y"
+#line 137 "ast.y"
                  { (yyval.caselist) = (yyvsp[0].mycase);}
 #line 1693 "ast.tab.c"
     break;
 
   case 26:
-#line 140 "ast.y"
+#line 139 "ast.y"
                                             { (yyval.mycase) = new Case ((yyvsp[-3].ival), (yyvsp[-1].stmt), (yyvsp[0].hasBreak)); }
 #line 1699 "ast.tab.c"
     break;
 
   case 27:
-#line 142 "ast.y"
+#line 141 "ast.y"
                          { (yyval.hasBreak) = true; }
 #line 1705 "ast.tab.c"
     break;
 
   case 28:
-#line 142 "ast.y"
+#line 141 "ast.y"
                                                       { (yyval.hasBreak) = false; }
 #line 1711 "ast.tab.c"
     break;
 
   case 29:
-#line 144 "ast.y"
+#line 143 "ast.y"
                          { (yyval.break_stmt) = new BreakStmt ((yylsp[-1]).first_line); }
 #line 1717 "ast.tab.c"
     break;
 
   case 30:
-#line 146 "ast.y"
+#line 145 "ast.y"
                                { (yyval.continue_stmt) = new ContinueStmt ((yylsp[-1]).first_line); }
 #line 1723 "ast.tab.c"
     break;
 
   case 31:
-#line 148 "ast.y"
+#line 147 "ast.y"
                                      { (yyval.block) = new Block ((yyvsp[-1].stmtlist)); }
 #line 1729 "ast.tab.c"
     break;
 
   case 32:
-#line 156 "ast.y"
+#line 155 "ast.y"
                          {  (yyvsp[-1].stmt)->_next = (yyvsp[0].stmtlist);  // also works when $2 is NULL
                             (yyval.stmtlist) = (yyvsp[-1].stmt);
 						 }
@@ -1737,81 +1737,81 @@ yyreduce:
     break;
 
   case 33:
-#line 159 "ast.y"
+#line 158 "ast.y"
                        { (yyval.stmtlist) = NULL; }
 #line 1743 "ast.tab.c"
     break;
 
   case 34:
-#line 161 "ast.y"
+#line 160 "ast.y"
                                          {
                   (yyval.exp) = new BinaryOp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp), (yylsp[-1]).first_line); }
 #line 1750 "ast.tab.c"
     break;
 
   case 35:
-#line 163 "ast.y"
+#line 162 "ast.y"
                                                  {
                   (yyval.exp) = new BinaryOp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp), (yylsp[-1]).first_line); }
 #line 1757 "ast.tab.c"
     break;
 
   case 36:
-#line 166 "ast.y"
+#line 165 "ast.y"
                                { (yyval.exp) = (yyvsp[-1].exp); }
 #line 1763 "ast.tab.c"
     break;
 
   case 37:
-#line 167 "ast.y"
+#line 166 "ast.y"
                         { (yyval.exp) = new IdNode ((yyvsp[0].name), (yylsp[0]).first_line);}
 #line 1769 "ast.tab.c"
     break;
 
   case 38:
-#line 168 "ast.y"
+#line 167 "ast.y"
                         { (yyval.exp) = new NumNode ((yyvsp[0].ival)); }
 #line 1775 "ast.tab.c"
     break;
 
   case 39:
-#line 169 "ast.y"
+#line 168 "ast.y"
                                     { (yyval.exp) = new NumNode ((yyvsp[0].fval)); }
 #line 1781 "ast.tab.c"
     break;
 
   case 40:
-#line 171 "ast.y"
+#line 170 "ast.y"
                                      { (yyval.boolexp) = new SimpleBoolExp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp)); }
 #line 1787 "ast.tab.c"
     break;
 
   case 41:
-#line 173 "ast.y"
+#line 172 "ast.y"
                             { (yyval.boolexp) = new Or ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
 #line 1793 "ast.tab.c"
     break;
 
   case 42:
-#line 174 "ast.y"
+#line 173 "ast.y"
                              { (yyval.boolexp) = new And ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
 #line 1799 "ast.tab.c"
     break;
 
   case 43:
-#line 175 "ast.y"
+#line 174 "ast.y"
                                       { (yyval.boolexp) = 0; /* not implemented yet */ }
 #line 1805 "ast.tab.c"
     break;
 
   case 44:
-#line 176 "ast.y"
+#line 175 "ast.y"
                              { (yyval.boolexp) = new Not ((yyvsp[-1].boolexp)); }
 #line 1811 "ast.tab.c"
     break;
 
   case 45:
-#line 177 "ast.y"
+#line 176 "ast.y"
                                   { (yyval.boolexp) = (yyvsp[-1].boolexp);}
 #line 1817 "ast.tab.c"
     break;
@@ -2055,7 +2055,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 180 "ast.y"
+#line 179 "ast.y"
 
 main (int argc, char **argv)
 {
