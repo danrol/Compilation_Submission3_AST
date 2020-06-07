@@ -151,6 +151,16 @@ public:
 };
 
 
+class Nand : public BoolExp {
+public:
+     Nand (BoolExp *left, BoolExp *right) { _left = left; _right = right; }
+	 void genBoolExp (int truelabel, int falselabel); // override
+
+	 BoolExp *_left; // left operand
+	 BoolExp *_right; // right operand
+};
+
+
 class Not : public BoolExp {
 public:
      Not (BoolExp *operand) { _operand = operand;}

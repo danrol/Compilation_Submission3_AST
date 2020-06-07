@@ -290,6 +290,30 @@ void And::genBoolExp (int truelabel, int falselabel)
 	}
 }
 
+void Nand::genBoolExp (int truelabel, int falselabel) 
+{
+  int next_label = newlabel();
+    if (truelabel == FALL_THROUGH && falselabel == FALL_THROUGH)
+	    return; // no need for code
+
+	if  (truelabel == FALL_THROUGH) {
+	    _left->genBoolExp (FALL_THROUGH,next_label); 
+        _right->genBoolExp (falselabel, FALL_THROUGH);
+        emitlabel(next_label);
+    } else if (falselabel == FALL_THROUGH) {
+        _left->genBoolExp (FALL_THROUGH, next_label); 
+        _right->genBoolExp (falselabel, FALL_THROUGH);
+		emitlabel(next_label);
+    } else { // no fall through
+        _left->genBoolExp (FALL_THROUGH, truelabel); 
+			
+		_right->genBoolExp (falselabel, truelabel);
+	}
+}
+
+
+
+
 void Not::genBoolExp (int truelabel, int falselabel)
 {
     _operand->genBoolExp (falselabel, truelabel);
