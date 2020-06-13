@@ -107,7 +107,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 22 "ast.y"
+#line 21 "ast.y"
 
 #include "gen.h"
 #include "ast.h"
@@ -150,7 +150,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "ast.y"
+#line 27 "ast.y"
 
    int ival;
    // float numbers in the source program are stored as double
@@ -225,10 +225,9 @@ void yyerror (std::string s);
 // number of errors
 int errors;
 int iotaCounter = 0;
-char tempID[100];
-int tempLine;
+bool isIota = false;
 
-#line 232 "ast.tab.c"
+#line 231 "ast.tab.c"
 
 #ifdef short
 # undef short
@@ -594,11 +593,11 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    92,    92,    98,   103,   111,   112,   114,   115,   117,
-     118,   119,   120,   121,   122,   123,   124,   126,   140,   148,
-     150,   152,   154,   156,   160,   163,   165,   167,   167,   169,
-     171,   173,   181,   184,   186,   188,   192,   193,   198,   199,
-     201,   203,   204,   205,   206,   207
+       0,    91,    91,   100,   106,   115,   116,   118,   119,   121,
+     122,   123,   124,   125,   126,   127,   128,   130,   144,   156,
+     158,   160,   162,   164,   168,   171,   173,   175,   175,   177,
+     179,   181,   189,   192,   194,   196,   200,   201,   206,   207,
+     209,   211,   212,   213,   214,   215
 };
 #endif
 
@@ -1555,283 +1554,290 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 92 "ast.y"
+#line 91 "ast.y"
                                {
+              printf("entered declarations stmt \n");
+              printf("number of errors = %d ", errors);
                      /* if (errors == 0) { for debugging: generate code even if errors found */
 					     (yyvsp[0].stmt)->genStmt (); emit ("halt\n");
 						 /*} */
-				     }
-#line 1565 "ast.tab.c"
+           }
+#line 1566 "ast.tab.c"
     break;
 
   case 3:
-#line 98 "ast.y"
-                                       { printf("entered usual declar bison");
+#line 100 "ast.y"
+                                       { printf("entered declarations type ID ';' \n");
+
                                       if (!(putSymbol((yyvsp[-1].name), (yyvsp[-2]._type)))){
                                              errorMsg ("line %d: redeclaration of %s\n",
 											            (yylsp[-1]).first_line, (yyvsp[-1].name));}
-                                 }
-#line 1575 "ast.tab.c"
+                                }
+#line 1577 "ast.tab.c"
     break;
 
   case 5:
-#line 111 "ast.y"
+#line 115 "ast.y"
           { (yyval._type) = _INT; }
-#line 1581 "ast.tab.c"
+#line 1583 "ast.tab.c"
     break;
 
   case 6:
-#line 112 "ast.y"
+#line 116 "ast.y"
             { (yyval._type) = _FLOAT; }
-#line 1587 "ast.tab.c"
+#line 1589 "ast.tab.c"
     break;
 
   case 7:
-#line 114 "ast.y"
+#line 118 "ast.y"
                           { (yyval.stmt) = (yyvsp[0].assign_stmt); }
-#line 1593 "ast.tab.c"
+#line 1595 "ast.tab.c"
     break;
 
   case 8:
-#line 115 "ast.y"
+#line 119 "ast.y"
                         { (yyval.stmt) = (yyvsp[0].read_stmt); }
-#line 1599 "ast.tab.c"
+#line 1601 "ast.tab.c"
     break;
 
   case 9:
-#line 117 "ast.y"
+#line 121 "ast.y"
                                       { (yyval.stmt) = (yyvsp[0].while_stmt); }
-#line 1605 "ast.tab.c"
+#line 1607 "ast.tab.c"
     break;
 
   case 10:
-#line 118 "ast.y"
+#line 122 "ast.y"
                               { (yyval.stmt) = (yyvsp[0].if_stmt); }
-#line 1611 "ast.tab.c"
+#line 1613 "ast.tab.c"
     break;
 
   case 11:
-#line 119 "ast.y"
+#line 123 "ast.y"
                         { (yyval.stmt) = (yyvsp[0].repeat_stmt); }
-#line 1617 "ast.tab.c"
+#line 1619 "ast.tab.c"
     break;
 
   case 12:
-#line 120 "ast.y"
+#line 124 "ast.y"
                                       { (yyval.stmt) = 0;  }
-#line 1623 "ast.tab.c"
+#line 1625 "ast.tab.c"
     break;
 
   case 13:
-#line 121 "ast.y"
+#line 125 "ast.y"
                                       { (yyval.stmt) = (yyvsp[0].switch_stmt); }
-#line 1629 "ast.tab.c"
+#line 1631 "ast.tab.c"
     break;
 
   case 14:
-#line 122 "ast.y"
+#line 126 "ast.y"
                                       { (yyval.stmt) = (yyvsp[0].break_stmt); }
-#line 1635 "ast.tab.c"
+#line 1637 "ast.tab.c"
     break;
 
   case 15:
-#line 123 "ast.y"
+#line 127 "ast.y"
                             { (yyval.stmt) = (yyvsp[0].continue_stmt);}
-#line 1641 "ast.tab.c"
+#line 1643 "ast.tab.c"
     break;
 
   case 16:
-#line 124 "ast.y"
+#line 128 "ast.y"
                                       { (yyval.stmt) = (yyvsp[0].block); }
-#line 1647 "ast.tab.c"
+#line 1649 "ast.tab.c"
     break;
 
   case 17:
-#line 126 "ast.y"
+#line 130 "ast.y"
                                  {
                 (yyval.read_stmt) = new ReadStmt (new IdNode ((yyvsp[-2].name), (yylsp[-2]).first_line), (yylsp[-4]).first_line); }
-#line 1654 "ast.tab.c"
+#line 1656 "ast.tab.c"
     break;
 
   case 18:
-#line 140 "ast.y"
+#line 144 "ast.y"
                                      { printf("entered assign statement ID = %s\n ", (yyvsp[-3].name));
   /* tempLine = atoi(yylineno); */
-  if(!(putSymbol((yyvsp[-3].name), _INT))){
-    errorMsg ("line %d: redeclaration of %s\n", (yylsp[-3]).first_line, (yyvsp[-3].name));}
-
+  if(isIota == true){
+    isIota = false;
+    printf("isIota == true\n");
+    if(!(putSymbol((yyvsp[-3].name), _INT))){
+      errorMsg ("line %d: redeclaration of %s\n", (yylsp[-3]).first_line, (yyvsp[-3].name));
+    }
+  }
   (yyval.assign_stmt) = new AssignStmt (new IdNode ((yyvsp[-3].name), (yylsp[-3]).first_line), (yyvsp[-1].exp), (yylsp[-2]).first_line);
 }
-#line 1666 "ast.tab.c"
-    break;
-
-  case 19:
-#line 148 "ast.y"
-                                         { (yyval.while_stmt) = new WhileStmt ((yyvsp[-2].boolexp), (yyvsp[0].stmt)); }
 #line 1672 "ast.tab.c"
     break;
 
-  case 20:
-#line 150 "ast.y"
-                                            {  (yyval.repeat_stmt) = new RepeatStmt(new SimpleBoolExp((yyvsp[-2].exp)), (yyvsp[0].stmt)); }
+  case 19:
+#line 156 "ast.y"
+                                         { (yyval.while_stmt) = new WhileStmt ((yyvsp[-2].boolexp), (yyvsp[0].stmt)); }
 #line 1678 "ast.tab.c"
     break;
 
-  case 21:
-#line 152 "ast.y"
-                                                { (yyval.if_stmt) = new IfStmt ((yyvsp[-4].boolexp), (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
+  case 20:
+#line 158 "ast.y"
+                                            {  (yyval.repeat_stmt) = new RepeatStmt(new SimpleBoolExp((yyvsp[-2].exp)), (yyvsp[0].stmt)); }
 #line 1684 "ast.tab.c"
     break;
 
-  case 23:
-#line 156 "ast.y"
-                                                                          { (yyval.switch_stmt) = new SwitchStmt ((yyvsp[-7].exp), (yyvsp[-4].caselist), (yyvsp[-1].stmt), (yylsp[-9]).first_line); }
+  case 21:
+#line 160 "ast.y"
+                                                { (yyval.if_stmt) = new IfStmt ((yyvsp[-4].boolexp), (yyvsp[-2].stmt), (yyvsp[0].stmt)); }
 #line 1690 "ast.tab.c"
     break;
 
-  case 24:
-#line 160 "ast.y"
-                         { (yyvsp[-1].mycase)->_next = (yyvsp[0].caselist);
-                           (yyval.caselist) = (yyvsp[-1].mycase); }
-#line 1697 "ast.tab.c"
+  case 23:
+#line 164 "ast.y"
+                                                                          { (yyval.switch_stmt) = new SwitchStmt ((yyvsp[-7].exp), (yyvsp[-4].caselist), (yyvsp[-1].stmt), (yylsp[-9]).first_line); }
+#line 1696 "ast.tab.c"
     break;
 
-  case 25:
-#line 163 "ast.y"
-                 { (yyval.caselist) = (yyvsp[0].mycase);}
+  case 24:
+#line 168 "ast.y"
+                         { (yyvsp[-1].mycase)->_next = (yyvsp[0].caselist);
+                           (yyval.caselist) = (yyvsp[-1].mycase); }
 #line 1703 "ast.tab.c"
     break;
 
-  case 26:
-#line 165 "ast.y"
-                                            { (yyval.mycase) = new Case ((yyvsp[-3].ival), (yyvsp[-1].stmt), (yyvsp[0].hasBreak)); }
+  case 25:
+#line 171 "ast.y"
+                 { (yyval.caselist) = (yyvsp[0].mycase);}
 #line 1709 "ast.tab.c"
     break;
 
-  case 27:
-#line 167 "ast.y"
-                         { (yyval.hasBreak) = true; }
+  case 26:
+#line 173 "ast.y"
+                                            { (yyval.mycase) = new Case ((yyvsp[-3].ival), (yyvsp[-1].stmt), (yyvsp[0].hasBreak)); }
 #line 1715 "ast.tab.c"
     break;
 
-  case 28:
-#line 167 "ast.y"
-                                                      { (yyval.hasBreak) = false; }
+  case 27:
+#line 175 "ast.y"
+                         { (yyval.hasBreak) = true; }
 #line 1721 "ast.tab.c"
     break;
 
-  case 29:
-#line 169 "ast.y"
-                         { (yyval.break_stmt) = new BreakStmt ((yylsp[-1]).first_line); }
+  case 28:
+#line 175 "ast.y"
+                                                      { (yyval.hasBreak) = false; }
 #line 1727 "ast.tab.c"
     break;
 
-  case 30:
-#line 171 "ast.y"
-                               { (yyval.continue_stmt) = new ContinueStmt ((yylsp[-1]).first_line); }
+  case 29:
+#line 177 "ast.y"
+                         { (yyval.break_stmt) = new BreakStmt ((yylsp[-1]).first_line); }
 #line 1733 "ast.tab.c"
     break;
 
-  case 31:
-#line 173 "ast.y"
-                                     { (yyval.block) = new Block ((yyvsp[-1].stmtlist)); }
+  case 30:
+#line 179 "ast.y"
+                               { (yyval.continue_stmt) = new ContinueStmt ((yylsp[-1]).first_line); }
 #line 1739 "ast.tab.c"
     break;
 
-  case 32:
+  case 31:
 #line 181 "ast.y"
+                                     { (yyval.block) = new Block ((yyvsp[-1].stmtlist)); }
+#line 1745 "ast.tab.c"
+    break;
+
+  case 32:
+#line 189 "ast.y"
                          {  (yyvsp[-1].stmt)->_next = (yyvsp[0].stmtlist);  // also works when $2 is NULL
                             (yyval.stmtlist) = (yyvsp[-1].stmt);
 						 }
-#line 1747 "ast.tab.c"
-    break;
-
-  case 33:
-#line 184 "ast.y"
-                       { (yyval.stmtlist) = NULL; }
 #line 1753 "ast.tab.c"
     break;
 
+  case 33:
+#line 192 "ast.y"
+                       { (yyval.stmtlist) = NULL; }
+#line 1759 "ast.tab.c"
+    break;
+
   case 34:
-#line 186 "ast.y"
+#line 194 "ast.y"
                                          {
                   (yyval.exp) = new BinaryOp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp), (yylsp[-1]).first_line); }
-#line 1760 "ast.tab.c"
+#line 1766 "ast.tab.c"
     break;
 
   case 35:
-#line 188 "ast.y"
+#line 196 "ast.y"
                                                  {
                   (yyval.exp) = new BinaryOp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp), (yylsp[-1]).first_line); }
-#line 1767 "ast.tab.c"
-    break;
-
-  case 36:
-#line 192 "ast.y"
-                               { (yyval.exp) = (yyvsp[-1].exp); }
 #line 1773 "ast.tab.c"
     break;
 
+  case 36:
+#line 200 "ast.y"
+                               { (yyval.exp) = (yyvsp[-1].exp); }
+#line 1779 "ast.tab.c"
+    break;
+
   case 37:
-#line 193 "ast.y"
+#line 201 "ast.y"
                          {
             std::string  iota_str = "iota"; std::string  temp = (yyvsp[0].name); printf("here1 %s \n \n ", (yyvsp[0].name));
             if (iota_str == temp) {
-              printf("hereeeee\n");(yyval.exp) = new NumNode(iotaCounter); iotaCounter++;}
+              printf("hereeeee\n");(yyval.exp) = new NumNode(iotaCounter); iotaCounter++; isIota = true;}
             else{(yyval.exp) = new IdNode ((yyvsp[0].name), (yylsp[0]).first_line);}}
-#line 1783 "ast.tab.c"
-    break;
-
-  case 38:
-#line 198 "ast.y"
-                        { (yyval.exp) = new NumNode ((yyvsp[0].ival)); }
 #line 1789 "ast.tab.c"
     break;
 
-  case 39:
-#line 199 "ast.y"
-                                    { (yyval.exp) = new NumNode ((yyvsp[0].fval)); }
+  case 38:
+#line 206 "ast.y"
+                        { (yyval.exp) = new NumNode ((yyvsp[0].ival)); }
 #line 1795 "ast.tab.c"
     break;
 
-  case 40:
-#line 201 "ast.y"
-                                     { (yyval.boolexp) = new SimpleBoolExp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp)); }
+  case 39:
+#line 207 "ast.y"
+                                    { (yyval.exp) = new NumNode ((yyvsp[0].fval)); }
 #line 1801 "ast.tab.c"
     break;
 
-  case 41:
-#line 203 "ast.y"
-                            { (yyval.boolexp) = new Or ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
+  case 40:
+#line 209 "ast.y"
+                                     { (yyval.boolexp) = new SimpleBoolExp ((yyvsp[-1].op), (yyvsp[-2].exp), (yyvsp[0].exp)); }
 #line 1807 "ast.tab.c"
     break;
 
-  case 42:
-#line 204 "ast.y"
-                             { (yyval.boolexp) = new And ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
+  case 41:
+#line 211 "ast.y"
+                            { (yyval.boolexp) = new Or ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
 #line 1813 "ast.tab.c"
     break;
 
-  case 43:
-#line 205 "ast.y"
-                              { (yyval.boolexp) = new Nand ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
+  case 42:
+#line 212 "ast.y"
+                             { (yyval.boolexp) = new And ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
 #line 1819 "ast.tab.c"
     break;
 
-  case 44:
-#line 206 "ast.y"
-                             { (yyval.boolexp) = new Not ((yyvsp[-1].boolexp)); }
+  case 43:
+#line 213 "ast.y"
+                              { (yyval.boolexp) = new Nand ((yyvsp[-2].boolexp), (yyvsp[0].boolexp)); }
 #line 1825 "ast.tab.c"
     break;
 
-  case 45:
-#line 207 "ast.y"
-                                  { (yyval.boolexp) = (yyvsp[-1].boolexp);}
+  case 44:
+#line 214 "ast.y"
+                             { (yyval.boolexp) = new Not ((yyvsp[-1].boolexp)); }
 #line 1831 "ast.tab.c"
     break;
 
+  case 45:
+#line 215 "ast.y"
+                                  { (yyval.boolexp) = (yyvsp[-1].boolexp);}
+#line 1837 "ast.tab.c"
+    break;
 
-#line 1835 "ast.tab.c"
+
+#line 1841 "ast.tab.c"
 
       default: break;
     }
@@ -2069,7 +2075,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 210 "ast.y"
+#line 218 "ast.y"
 
 main (int argc, char **argv)
 {

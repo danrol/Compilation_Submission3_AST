@@ -4,3 +4,9 @@ int  foo;
 float bar;
 b = iota;
 c = iota;
+{
+  bar = 10.1;
+  foo = 125;
+}
+
+   

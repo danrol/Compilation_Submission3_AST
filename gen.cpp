@@ -335,6 +335,7 @@ void Or::genBoolExp (int truelabel, int falselabel)
 
               if (idtype == _rhs->_type)
               {
+                printf("idtype == _rhs->_type");
                 emit ("%s = %s\n", _lhs->_name, result._string);
               }
               else

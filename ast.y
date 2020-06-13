@@ -13,8 +13,7 @@ void yyerror (std::string s);
 // number of errors
 int errors;
 int iotaCounter = 0;
-char tempID[100];
-int tempLine;
+bool isIota = false;
 }
 
 
@@ -90,17 +89,22 @@ int tempLine;
 %define parse.error verbose
 %%
 program    : declarations stmt {
+              printf("entered declarations stmt \n");
+              printf("number of errors = %d ", errors);
                      /* if (errors == 0) { for debugging: generate code even if errors found */
 					     $2->genStmt (); emit ("halt\n");
 						 /*} */
-				     }
+           };
 
-declarations: declarations type ID ';' { printf("entered usual declar bison");
+
+declarations: declarations type ID ';' { printf("entered declarations type ID ';' \n");
+
                                       if (!(putSymbol($3, $2))){
                                              errorMsg ("line %d: redeclaration of %s\n",
 											            @3.first_line, $3);}
-                                 };
-                                 | /* empty */ ;
+                                };
+                                | /* empty */ ;
+
 /* declarations:  ID '=' 'iota' ';' { printf("entered iota bison");
                                             if (!(putSymbol($1, _INT)))
                                              errorMsg ("line %d: redeclaration of %s\n",
@@ -139,9 +143,13 @@ read_stmt:    READ '(' ID ')' ';'{
 
 assign_stmt:  ID '='  expression ';' { printf("entered assign statement ID = %s\n ", $1);
   /* tempLine = atoi(yylineno); */
-  if(!(putSymbol($1, _INT))){
-    errorMsg ("line %d: redeclaration of %s\n", @1.first_line, $1);}
-
+  if(isIota == true){
+    isIota = false;
+    printf("isIota == true\n");
+    if(!(putSymbol($1, _INT))){
+      errorMsg ("line %d: redeclaration of %s\n", @1.first_line, $1);
+    }
+  }
   $$ = new AssignStmt (new IdNode ($1, @1.first_line), $3, @2.first_line);
 };
 
@@ -193,7 +201,7 @@ expression: '(' expression ')' { $$ = $2; } |
              ID          {
             std::string  iota_str = "iota"; std::string  temp = $1; printf("here1 %s \n \n ", $1);
             if (iota_str == temp) {
-              printf("hereeeee\n");$$ = new NumNode(iotaCounter); iotaCounter++;}
+              printf("hereeeee\n");$$ = new NumNode(iotaCounter); iotaCounter++; isIota = true;}
             else{$$ = new IdNode ($1, @1.first_line);}}|
             INT_NUM     { $$ = new NumNode ($1); } |
 			FLOAT_NUM   { $$ = new NumNode ($1); };
