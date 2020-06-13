@@ -1,6 +1,6 @@
 /* iota example */
 a = iota;
-int  foo;
+int foo;
 float bar;
 b = iota;
 c = iota;
