@@ -54,7 +54,7 @@ bool isIota = false;
 
 %token <ival> INT_NUM
 %token <fval> FLOAT_NUM
-%token <op> ADDOP MULOP RELOP
+%token <op> ADDOP MULOP RELOP XOR
 %token <name> ID
 
 %token READ IF ELSE WHILE FOR INT FLOAT REPEAT
@@ -143,13 +143,13 @@ read_stmt:    READ '(' ID ')' ';'{
 
 assign_stmt:  ID '='  expression ';' { printf("entered assign statement ID = %s\n ", $1);
   /* tempLine = atoi(yylineno); */
-  if(isIota == true){
+  /* if(isIota == true){
     isIota = false;
     printf("isIota == true\n");
     if(!(putSymbol($1, _INT))){
       errorMsg ("line %d: redeclaration of %s\n", @1.first_line, $1);
     }
-  }
+  } */
   $$ = new AssignStmt (new IdNode ($1, @1.first_line), $3, @2.first_line);
 };
 
@@ -194,15 +194,21 @@ stmtlist:  /* empty */ { $$ = NULL; };
 expression : expression ADDOP expression {
                   $$ = new BinaryOp ($2, $1, $3, @2.first_line); } |
 		     expression MULOP expression {
+                  $$ = new BinaryOp ($2, $1, $3, @2.first_line); } |
+          expression XOR expression {
                   $$ = new BinaryOp ($2, $1, $3, @2.first_line); };
+
 
 /* expression: 'iota' {printf("iota expression\n \n"); }; */
 expression: '(' expression ')' { $$ = $2; } |
              ID          {
-            std::string  iota_str = "iota"; std::string  temp = $1; printf("here1 %s \n \n ", $1);
+            /* std::string  iota_str = "iota"; std::string  temp = $1; printf("here1 %s \n \n ", $1);
             if (iota_str == temp) {
-              printf("hereeeee\n");$$ = new NumNode(iotaCounter); iotaCounter++; isIota = true;}
-            else{$$ = new IdNode ($1, @1.first_line);}}|
+              printf("hereeeee\n");$$ = new NumNode(iotaCounter); iotaCounter++; isIota = true;} */
+            /* else{ */
+              $$ = new IdNode ($1, @1.first_line);}
+              /* } */
+              |
             INT_NUM     { $$ = new NumNode ($1); } |
 			FLOAT_NUM   { $$ = new NumNode ($1); };
 

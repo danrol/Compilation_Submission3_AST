@@ -108,16 +108,28 @@ opName (enum op op, myType t)
 
 Object BinaryOp::genExp ()
 {
+  printf("Entered BinaryOp");
   Object left_operand_result = _left->genExp ();
   Object right_operand_result = _right->genExp ();
+  Object result;
 
 
   char rightStr[100] = "_t";
   char rightTempIdStr[100];
 
+  if(_op == XOR_OP){
+    printf("\n XOR_OP\n");
+    char result_xor_op[100];
+    char temp_op[] = "^";
+    // int str_len_tmp =
+    strcpy(result_xor_op, left_operand_result._string);
+    strncat(result_xor_op, temp_op, 1);
+    strncat(result_xor_op, right_operand_result._string, strlen(right_operand_result._string));
+    result = Object(result_xor_op);
+  }
+  else{
   if (_left->_type != _right->_type){
-    // printf("returns objects in BinaryOp::genExp\n");
-
+      printf("BinaryOp different types");
     Object temp = newTemp();
     int rightTempId = currentTemp;
     sprintf(rightTempIdStr, "%d", rightTempId);
@@ -139,13 +151,14 @@ Object BinaryOp::genExp ()
     strcpy(rightStr, right_operand_result._string);
   }
 
-  Object result = newTemp ();
+  result = newTemp ();
 
   const char *the_op = opName (_op, _type);
 
   emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
   the_op, rightStr);
   printf("\n");
+  }
   return result;
 }
 
@@ -336,7 +349,7 @@ void Or::genBoolExp (int truelabel, int falselabel)
               if (idtype == _rhs->_type)
               {
                 printf("idtype == _rhs->_type");
-                emit ("%s = %s\n", _lhs->_name, result._string);
+                emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
               }
               else
               {

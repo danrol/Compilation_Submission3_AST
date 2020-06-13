@@ -28,6 +28,7 @@ extern int atoi (const char *);
 "-"        { yylval.op = MINUS; return ADDOP;}
 "*"        { yylval.op = MUL; return MULOP; }
 "/"        { yylval.op = DIV; return MULOP;}
+"^"        { yylval.op = XOR_OP; return XOR;}
 
 "<"        { yylval.op = LT; return RELOP; }
 ">"        { yylval.op = GT; return RELOP; }
@@ -55,7 +56,6 @@ extern int atoi (const char *);
 "break"    { return BREAK; }
 "continue" { return CONTINUE;}
 "read"     { return READ;}
-
 
 "repeat"   {return REPEAT;}
 
