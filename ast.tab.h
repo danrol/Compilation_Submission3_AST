@@ -70,17 +70,16 @@ extern int yydebug;
     INT = 269,
     FLOAT = 270,
     REPEAT = 271,
-    IOTA = 272,
-    OR = 273,
-    AND = 274,
-    NOT = 275,
-    NAND = 276,
-    SWITCH = 277,
-    CASE = 278,
-    DEFAULT = 279,
-    BREAK = 280,
-    CONTINUE = 281,
-    XOR = 282
+    OR = 272,
+    AND = 273,
+    NOT = 274,
+    NAND = 275,
+    SWITCH = 276,
+    CASE = 277,
+    DEFAULT = 278,
+    BREAK = 279,
+    CONTINUE = 280,
+    XOR = 281
   };
 #endif
 
@@ -116,7 +115,7 @@ union YYSTYPE
    BoolExp *boolexp;
    bool hasBreak;
 
-#line 120 "ast.tab.h"
+#line 119 "ast.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

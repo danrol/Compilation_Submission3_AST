@@ -150,7 +150,6 @@ public:
 	 BoolExp *_right; // right operand
 };
 
-
 class Nand : public BoolExp {
 public:
      Nand (BoolExp *left, BoolExp *right) { _left = left; _right = right; }

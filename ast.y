@@ -171,11 +171,10 @@ boolexp: expression RELOP expression { $$ = new SimpleBoolExp ($2, $1, $3); };
 
 boolexp: boolexp OR boolexp { $$ = new Or ($1, $3); } |
          boolexp AND boolexp { $$ = new And ($1, $3); } |
-		 boolexp NAND boolexp { $$ = new Nand ($1, $3); /* not implemented yet */ } |
+         boolexp NAND boolexp { $$ = new Nand ($1, $3); } |
          NOT '(' boolexp ')' { $$ = new Not ($3); } |
 		 '(' boolexp ')'  { $$ = $2;}
 		 ;
-     
 
 %%
 main (int argc, char **argv)

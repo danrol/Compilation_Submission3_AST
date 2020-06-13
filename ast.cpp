@@ -53,4 +53,3 @@ AssignStmt::AssignStmt (IdNode *lhs, Exp *rhs, int line)
 SwitchStmt::SwitchStmt (Exp *exp, Case *caselist, Stmt *default_stmt, int line) {
 	       _exp = exp; _caselist = caselist; _default_stmt = default_stmt; _line = line;
 }
-
