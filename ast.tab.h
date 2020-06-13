@@ -44,7 +44,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 20 "ast.y"
+#line 22 "ast.y"
 
 #include "gen.h"
 #include "ast.h"
@@ -87,7 +87,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 26 "ast.y"
+#line 28 "ast.y"
 
    int ival;
    // float numbers in the source program are stored as double

@@ -329,45 +329,37 @@ void Or::genBoolExp (int truelabel, int falselabel)
             void AssignStmt::genStmt()
             {
 
+              Object result = _rhs->genExp();
 
-              if (_isIota == true){
-                // emit(" assigment %s = %s\n", _lhs->_name, result._string);
-                emit(" assigment %s\n", _lhs->_name);
-                // printf(" assigment iota = %s", result._string);
+              myType idtype = _lhs->_type;
+
+              if (idtype == _rhs->_type)
+              {
+                emit ("%s = %s\n", _lhs->_name, result._string);
               }
               else
               {
-                Object result = _rhs->genExp();
-
-                myType idtype = _lhs->_type;
-
-                if (idtype == _rhs->_type)
+                if (_lhs->_type != _rhs->_type && _lhs->_type != UNKNOWN)
                 {
-                  emit ("%s = %s\n", _lhs->_name, result._string);
-                }
-                else
-                {
-                  if (_lhs->_type != _rhs->_type && _lhs->_type != UNKNOWN)
-                  {
-                    //       errorMsg ("line %d: left hand side and right hand side\
-                    // of assignment have different types\n", _line);
-                    switch (_lhs->_type ) {
-                      case _INT:
-                      _rhs->_type = _INT;
-                      emit(" %s = (int) %s  ", _lhs->_name, result._string);
-                      printf("!!!!Warning casting from float to int. Valuable data may be lost\n");
-                      break;
-                      case _FLOAT:
-                      _rhs->_type = _FLOAT;
-                      emit(" %s = (float) %s\n", _lhs->_name, result._string);
-                      break;
-                      default:
-                      fprintf (stderr, "internal compiler error #3\n"); exit (1);
-                    }
+                  //       errorMsg ("line %d: left hand side and right hand side\
+                  // of assignment have different types\n", _line);
+                  switch (_lhs->_type ) {
+                    case _INT:
+                    _rhs->_type = _INT;
+                    emit(" %s = (int) %s  ", _lhs->_name, result._string);
+                    printf("!!!!Warning casting from float to int. Valuable data may be lost\n");
+                    break;
+                    case _FLOAT:
+                    _rhs->_type = _FLOAT;
+                    emit(" %s = (float) %s\n", _lhs->_name, result._string);
+                    break;
+                    default:
+                    fprintf (stderr, "internal compiler error #3\n"); exit (1);
                   }
                 }
               }
             }
+
 
 
 

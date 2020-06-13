@@ -186,16 +186,13 @@ public:
 class AssignStmt : public Stmt {
 public:
       AssignStmt (IdNode *lhs, Exp *rhs, int line);
-      // {this->_lhs = lhs; this->_rhs = rhs; this->_line = line; _isIota = false; }
-      AssignStmt (IdNode *lhs, Exp *rhs, bool isIota, int line)
-      {this->_lhs = lhs; this->_rhs = rhs; this->_line = line; _isIota = true; printf("assignStmt with iota");}
+
 
       void genStmt (); // override
 
       IdNode *_lhs; // left hand side
 	  Exp *_rhs; // right hand side
 	  int _line; // line in source code
-    bool _isIota; // isIota flag
 };
 
 class IfStmt : public Stmt {

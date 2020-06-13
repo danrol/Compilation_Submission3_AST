@@ -28,8 +28,6 @@ AssignStmt::AssignStmt (IdNode *lhs, Exp *rhs, int line)
    _lhs = lhs;
    _rhs = rhs;
    _line = line;
-   _isIota = false;
-
     // if (lhs->_type != _rhs->_type && lhs->_type != UNKNOWN)
     // {
     //   //       errorMsg ("line %d: left hand side and right hand side\
