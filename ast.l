@@ -4,16 +4,18 @@
 extern int atoi (const char *);
 
 /* columns  are not tracked here (yylloc.first_column and yylloc.last_column are not set) */
-#define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno; 
+#define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno;
 %}
 
 %x COMMENT
 
 %option noyywrap
-/*  this will cause  flex to maintain the current input line number in 
+/*  this will cause  flex to maintain the current input line number in
     the global variable int yylineno.
-*/	
+*/
 %option yylineno
+%option noinput nounput
+
 %%
 
 [0-9]+     { yylval.ival = atoi (yytext); return INT_NUM; }
@@ -56,7 +58,7 @@ extern int atoi (const char *);
 
 
 "repeat"   {return REPEAT;}
-      
+
 
 [a-zA-Z][A-Za-z_]*  {  strcpy (yylval.name, yytext); return ID; }
 
