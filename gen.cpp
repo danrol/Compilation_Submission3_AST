@@ -151,7 +151,7 @@ Object BinaryOp::genExp ()
 
   const char *the_op = opName (_op, _type);
 
-  emit ("%s = %s %s %s BinaryOp::genExp\n", result._string, left_operand_result._string,
+  emit ("%s = %s %s %s \n", result._string, left_operand_result._string,
   the_op, rightStr);
   printf("\n");
   }
@@ -340,7 +340,7 @@ void And::genBoolExp (int truelabel, int falselabel)
 
               if (idtype == _rhs->_type)
               {
-                emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
+                emit ("%s = %s\n", _lhs->_name, result._string);
               }
               else
               {
@@ -372,7 +372,7 @@ void And::genBoolExp (int truelabel, int falselabel)
 
               if (idtype == _rhs->_type)
               {
-                emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
+                emit ("%s = %s\n", _lhs->_name, result._string);
               }
               else
               {
@@ -413,7 +413,7 @@ void And::genBoolExp (int truelabel, int falselabel)
             }
 
             void ContinueStmt::genStmt(){
-              emit("goto label%d !!!!continue!!!\n", currentContLabel);
+              emit("goto label%d /*continue*/\n", currentContLabel);
             }
 
             void IfStmt::genStmt()
