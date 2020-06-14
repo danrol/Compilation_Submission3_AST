@@ -162,6 +162,7 @@ Object BinaryOp::genExp ()
   return result;
 }
 
+
 Object NumNode::genExp ()
 {
   // printf("inside NumNode::genExp\n");
@@ -272,10 +273,10 @@ void Or::genBoolExp (int truelabel, int falselabel)
           // fall through and evaluate right operand
           _right->genBoolExp (truelabel, falselabel);
         }
-      }
+}
 
-      void And::genBoolExp (int truelabel, int falselabel)
-      {
+void And::genBoolExp (int truelabel, int falselabel)
+{
         if (truelabel == FALL_THROUGH && falselabel == FALL_THROUGH)
         return; // no need for code
 
@@ -301,7 +302,7 @@ void Or::genBoolExp (int truelabel, int falselabel)
                 // so jump to falselabel (without evaluating the right operand)
                 _right->genBoolExp (truelabel, falselabel);
               }
-            }
+}
 
             void Nand::genBoolExp (int truelabel, int falselabel)
             {
@@ -374,7 +375,42 @@ void Or::genBoolExp (int truelabel, int falselabel)
               }
             }
 
+            void AssignIota::genStmt()
+            {
 
+              Object result = _rhs->genExp();
+
+              myType idtype = _lhs->_type;
+
+              if (idtype == _rhs->_type)
+              {
+                printf("idtype == _rhs->_type");
+                emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
+              }
+              else
+              {
+                if (_lhs->_type != _rhs->_type && _lhs->_type != UNKNOWN)
+                {
+                  switch (_lhs->_type ) {
+                    case _INT:
+                    _rhs->_type = _INT;
+                    emit(" %s = (int) %s  ", _lhs->_name, result._string);
+                    printf("!!!!Warning casting from float to int. Valuable data may be lost\n");
+                    break;
+                    case _FLOAT:
+                    _rhs->_type = _FLOAT;
+                    emit(" %s = (float) %s\n", _lhs->_name, result._string);
+                    break;
+                    default:
+                    fprintf (stderr, "internal compiler error #3\n"); exit (1);
+                  }
+                }
+              }
+            }
+
+            
+
+        
 
 
             void WhileStmt::genStmt()

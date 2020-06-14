@@ -57,29 +57,30 @@ extern int yydebug;
   enum yytokentype
   {
     INT_NUM = 258,
-    FLOAT_NUM = 259,
-    ADDOP = 260,
-    MULOP = 261,
-    RELOP = 262,
-    XOR = 263,
-    ID = 264,
-    READ = 265,
-    IF = 266,
-    ELSE = 267,
-    WHILE = 268,
-    FOR = 269,
-    INT = 270,
-    FLOAT = 271,
-    REPEAT = 272,
-    OR = 273,
-    AND = 274,
-    NOT = 275,
-    NAND = 276,
-    SWITCH = 277,
-    CASE = 278,
-    DEFAULT = 279,
-    BREAK = 280,
-    CONTINUE = 281
+    IOTA = 259,
+    FLOAT_NUM = 260,
+    ADDOP = 261,
+    MULOP = 262,
+    RELOP = 263,
+    XOR = 264,
+    ID = 265,
+    READ = 266,
+    IF = 267,
+    ELSE = 268,
+    WHILE = 269,
+    FOR = 270,
+    INT = 271,
+    FLOAT = 272,
+    REPEAT = 273,
+    OR = 274,
+    AND = 275,
+    NOT = 276,
+    NAND = 277,
+    SWITCH = 278,
+    CASE = 279,
+    DEFAULT = 280,
+    BREAK = 281,
+    CONTINUE = 282
   };
 #endif
 
@@ -115,7 +116,7 @@ union YYSTYPE
    BoolExp *boolexp;
    bool hasBreak;
 
-#line 119 "ast.tab.h"
+#line 120 "ast.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

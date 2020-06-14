@@ -194,6 +194,19 @@ public:
 	  int _line; // line in source code
 };
 
+class AssignIota : public Stmt {
+public:
+    AssignIota(IdNode *lhs, Exp *rhs ,  int line);
+
+    void genStmt();
+
+    IdNode *_lhs;
+    Exp *_rhs;
+    int line;
+};
+
+
+
 class IfStmt : public Stmt {
 public:
      IfStmt (BoolExp *condition, Stmt *thenStmt, Stmt *elseStmt)

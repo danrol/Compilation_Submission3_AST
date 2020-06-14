@@ -12,7 +12,7 @@ void yyerror (std::string s);
 
 // number of errors
 int errors;
-int iotaCounter = 0;
+Exp* iotaCounter = 0;
 bool isIota = false;
 }
 
@@ -52,12 +52,13 @@ bool isIota = false;
    bool hasBreak;
 }
 
-%token <ival> INT_NUM
+%token <ival> INT_NUM 
+%token <exp> IOTA
 %token <fval> FLOAT_NUM
 %token <op> ADDOP MULOP RELOP XOR
 %token <name> ID
 
-%token READ IF ELSE WHILE FOR INT FLOAT REPEAT
+%token READ IF ELSE WHILE FOR INT FLOAT REPEAT 
 %token OR AND NOT NAND SWITCH CASE DEFAULT BREAK CONTINUE
 %type <_type> type
 
@@ -97,13 +98,33 @@ program    : declarations stmt {
            };
 
 
-declarations: declarations type ID ';' { printf("entered declarations type ID ';' \n");
+declarations: declarations type ID ';' { printf("\nentered declarations type ID ';' \n");
 
                                       if (!(putSymbol($3, $2))){
                                              errorMsg ("line %d: redeclaration of %s\n",
 											            @3.first_line, $3);}
                                 };
                                 | /* empty */ ;
+
+
+
+                                | declarations ID '=' IOTA ';' 
+
+                                { printf("\nentered iota bison\n");
+
+                                if (!(putSymbol($2, _INT)))
+                                             errorMsg ("line %d: redeclaration of %s\n");
+                
+                                printf("iota counter: %d\n" , iotaCounter);
+                                
+                                AssignStmt(new IdNode ($2, @2.first_line), iotaCounter, @3.first_line);
+
+                                emit("%s = %d\n" , $2 , (int)iotaCounter/8 );
+                                
+                                printf("entered assign statement %s = %d\n ", $2 , iotaCounter);
+                                iotaCounter++;
+                                };
+                    
 
 /* declarations:  ID '=' 'iota' ';' { printf("entered iota bison");
                                             if (!(putSymbol($1, _INT)))
@@ -112,6 +133,9 @@ declarations: declarations type ID ';' { printf("entered declarations type ID ';
                                   new AssignStmt (new IdNode ($1, @1.first_line),
                                   new NumNode (iotaCounter), true, @1.first_line);
                                 iotaCounter = iotaCounter + 1; } */
+
+
+
 type: INT { $$ = _INT; } |
       FLOAT { $$ = _FLOAT; };
 
@@ -132,7 +156,7 @@ read_stmt:    READ '(' ID ')' ';'{
 
 /* write_stmt:   WRITE '(' expression ')' ';' ; */
 
-/* assign_stmt:  ID '=' 'iota' ';' { printf("sdfafdsfjl"); if (!(putSymbol ($1, _INT))){
+/* assign_stmt:  ID '=' 'IOTA' ';' { printf("sdfafdsfjl"); if (!(putSymbol ($1, _INT))){
                                   errorMsg ("line %d: redeclaration of %s\n",
 											            @1.first_line, $1);
                                 }
@@ -199,7 +223,7 @@ expression : expression ADDOP expression {
                   $$ = new BinaryOp ($2, $1, $3, @2.first_line); };
 
 
-/* expression: 'iota' {printf("iota expression\n \n"); }; */
+/* expression: 'IOTA' {printf("iota expression\n \n"); }; */
 expression: '(' expression ')' { $$ = $2; } |
              ID          {
             /* std::string  iota_str = "iota"; std::string  temp = $1; printf("here1 %s \n \n ", $1);

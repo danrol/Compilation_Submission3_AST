@@ -22,6 +22,7 @@ BinaryOp::BinaryOp (enum op op, Exp *left, Exp *right, int line)
   _type = left->_type;
 }
 
+
 AssignStmt::AssignStmt (IdNode *lhs, Exp *rhs, int line)
    : Stmt ()  // call base class (super class) constructor
 {
@@ -47,6 +48,17 @@ AssignStmt::AssignStmt (IdNode *lhs, Exp *rhs, int line)
     //       fprintf (stderr, "internal compiler error #3\n"); exit (1);
     //   }
 }
+
+AssignIota::AssignIota(IdNode *lhs, Exp *rhs ,  int line)
+    : Stmt ()
+{
+    _lhs = lhs;
+    _rhs = rhs;
+
+}
+
+
+
 
 
 SwitchStmt::SwitchStmt (Exp *exp, Case *caselist, Stmt *default_stmt, int line) {

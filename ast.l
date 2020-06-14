@@ -56,6 +56,8 @@ extern int atoi (const char *);
 "break"    { return BREAK; }
 "continue" { return CONTINUE;}
 "read"     { return READ;}
+"iota"     { yylval.ival = atoi (yytext); return IOTA; }
+
 
 "repeat"   {return REPEAT;}
 

@@ -1,9 +1,15 @@
-int a; 
-int b;
-int c;
+a = iota;
+int  foo;
+float bar;
+b = iota;
+c = iota;
+
 
 {
-  b = a ^ 3;
+
+
+
 }
+
 
 	
