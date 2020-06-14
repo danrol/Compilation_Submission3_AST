@@ -225,7 +225,7 @@ void yyerror (std::string s);
 
 // number of errors
 int errors;
-Exp* iotaCounter = 0;
+int iotaCounter = 0;
 bool isIota = false;
 
 #line 232 "ast.tab.c"
@@ -1593,9 +1593,9 @@ yyreduce:
                 
                                 printf("iota counter: %d\n" , iotaCounter);
                                 
-                                AssignStmt(new IdNode ((yyvsp[-3].name), (yylsp[-3]).first_line), iotaCounter, (yylsp[-2]).first_line);
+                                //AssignStmt(new IdNode ($2, @2.first_line), iotaCounter, @3.first_line);
 
-                                emit("%s = %d\n" , (yyvsp[-3].name) , (int)iotaCounter/8 );
+                                emit("%s = %d\n" , (yyvsp[-3].name) , (int)iotaCounter );
                                 
                                 printf("entered assign statement %s = %d\n ", (yyvsp[-3].name) , iotaCounter);
                                 iotaCounter++;

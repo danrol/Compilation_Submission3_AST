@@ -108,7 +108,6 @@ opName (enum op op, myType t)
 
 Object BinaryOp::genExp ()
 {
-  printf("Entered BinaryOp");
   Object left_operand_result = _left->genExp ();
   Object right_operand_result = _right->genExp ();
   Object result;
@@ -118,10 +117,8 @@ Object BinaryOp::genExp ()
   char rightTempIdStr[100];
 
   if(_op == XOR_OP){
-    printf("\n XOR_OP\n");
     char result_xor_op[100];
     char temp_op[] = "^";
-    // int str_len_tmp =
     strcpy(result_xor_op, left_operand_result._string);
     strncat(result_xor_op, temp_op, 1);
     strncat(result_xor_op, right_operand_result._string, strlen(right_operand_result._string));
@@ -129,7 +126,6 @@ Object BinaryOp::genExp ()
   }
   else{
   if (_left->_type != _right->_type){
-      printf("BinaryOp different types");
     Object temp = newTemp();
     int rightTempId = currentTemp;
     sprintf(rightTempIdStr, "%d", rightTempId);
@@ -165,7 +161,6 @@ Object BinaryOp::genExp ()
 
 Object NumNode::genExp ()
 {
-  // printf("inside NumNode::genExp\n");
   return (_type == _INT) ? Object(_u.ival) : Object(_u.fval);
   #if 0
   int result = newTemp ();
@@ -179,7 +174,6 @@ Object NumNode::genExp ()
 
 Object IdNode::genExp()
 {
-  // printf("Inside IdNode::genExp()\n");
   return Object(_name);
   #if 0
   int result = newTemp ();
@@ -196,18 +190,15 @@ void SimpleBoolExp::genBoolExp (int truelabel, int falselabel)
 
   const char *the_op;
 
-
   Object left_result = _left->genExp ();
   Object right_result = _right->genExp ();
 
   strcpy(currentResult, left_result._string);
 
-
-  if(isRepeat == true && isLabel1Set == false){ // TODO change to more elegant solution
+  if(isRepeat == true && isLabel1Set == false){ 
     emitlabel(label1);
     isLabel1Set = true;
     isRepeat = false;
-    // BinaryOp (enum op op, Exp *left, Exp *right, int line);
   }
 
   switch (_op) {
@@ -349,15 +340,12 @@ void And::genBoolExp (int truelabel, int falselabel)
 
               if (idtype == _rhs->_type)
               {
-                printf("idtype == _rhs->_type");
                 emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
               }
               else
               {
                 if (_lhs->_type != _rhs->_type && _lhs->_type != UNKNOWN)
                 {
-                  //       errorMsg ("line %d: left hand side and right hand side\
-                  // of assignment have different types\n", _line);
                   switch (_lhs->_type ) {
                     case _INT:
                     _rhs->_type = _INT;
@@ -384,7 +372,6 @@ void And::genBoolExp (int truelabel, int falselabel)
 
               if (idtype == _rhs->_type)
               {
-                printf("idtype == _rhs->_type");
                 emit ("%s = %s assign stmt\n", _lhs->_name, result._string);
               }
               else
@@ -410,9 +397,6 @@ void And::genBoolExp (int truelabel, int falselabel)
 
             
 
-        
-
-
             void WhileStmt::genStmt()
             {
               int condlabel = newlabel ();
@@ -424,14 +408,11 @@ void And::genBoolExp (int truelabel, int falselabel)
 
               _body->genStmt ();
 
-
-
               emit ("goto label%d\n", condlabel);
               emitlabel(exitlabel);
             }
 
             void ContinueStmt::genStmt(){
-              // continuelabels.push(currentContLabel);
               emit("goto label%d !!!!continue!!!\n", currentContLabel);
             }
 
@@ -473,26 +454,20 @@ void And::genBoolExp (int truelabel, int falselabel)
 
             void SwitchStmt::genStmt()
             {
-              // int check_cases = newlabel();
               int default_stmt_label = 0, exitlabel = 0;
               Object temp = _exp->genExp();
               int result = currentTemp;
 
-              // exitlabels.push(exitlabel);
               BreakStmt *case_break = new BreakStmt(_line);
               if (_exp->_type == _INT)
               {
-                // emit("goto label%d\n", check_cases);
                 Case* currect_case = _caselist;
                 Case* temp_current_case = _caselist;
-
 
                 while (temp_current_case != NULL){
                   temp_current_case->_label = newlabel();
                   tempLabels.push(temp_current_case->_label);
                   emit("if _t%d == %d goto label%d\n",result, temp_current_case->_number,temp_current_case->_label);
-                  // if (currect_case->_hasBreak)
-                  // case_break->genStmt();
                   temp_current_case = temp_current_case->_next;
                 }
                 default_stmt_label = newlabel();
@@ -508,8 +483,6 @@ void And::genBoolExp (int truelabel, int falselabel)
 
                 while (currect_case != NULL)
                 {
-                  // currect_case->_label = newlabel();
-                  // emitlabel(currect_case->_label);
                   emitlabel(exitlabels.top());
                   exitlabels.pop();
                   currect_case->_stmt->genStmt();

@@ -29,24 +29,6 @@ AssignStmt::AssignStmt (IdNode *lhs, Exp *rhs, int line)
    _lhs = lhs;
    _rhs = rhs;
    _line = line;
-    // if (lhs->_type != _rhs->_type && lhs->_type != UNKNOWN)
-    // {
-    //   //       errorMsg ("line %d: left hand side and right hand side\
-    //   // of assignment have different types\n", _line);
-    //   switch (_lhs->_type ) {
-    //     case _INT:
-    //       _rhs->_type = _INT;
-    //       printf("!!!!Warning casting from float to int. Valuable data may be lost\n");
-    //     break;
-    //   case _FLOAT:
-    //   _rhs->_type = _FLOAT;
-    //     break;
-    //   case UNKNOWN:
-    //       _rhs->_type = UNKNOWN;
-    //     break;
-    //   default:
-    //       fprintf (stderr, "internal compiler error #3\n"); exit (1);
-    //   }
 }
 
 AssignIota::AssignIota(IdNode *lhs, Exp *rhs ,  int line)
@@ -56,9 +38,6 @@ AssignIota::AssignIota(IdNode *lhs, Exp *rhs ,  int line)
     _rhs = rhs;
 
 }
-
-
-
 
 
 SwitchStmt::SwitchStmt (Exp *exp, Case *caselist, Stmt *default_stmt, int line) {

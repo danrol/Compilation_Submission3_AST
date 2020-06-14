@@ -1,15 +1,14 @@
-a = iota;
-int  foo;
-float bar;
-b = iota;
-c = iota;
-
+int a; 
+int b;
+int c;
 
 {
+  c = 0;
+  a = 5; 
+  b = 17;
 
-
-
+  while (a > c and a < b)
+    a = a * 4;
 }
-
 
 	
